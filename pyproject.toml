@@ -1,0 +1,24 @@
+[project]
+name = "litestar-meals"
+version = "0.1.0"
+description = "Default template for PDM package"
+authors = [
+    {name = "Denis Shumeev", email = "denis-shumeev@yandex.ru"},
+]
+dependencies = [
+    "litestar[cryptography,jwt,picologging,pydantic,redis,sqlalchemy]>=2.6.3",
+    "pydantic-settings>=2.2.1",
+    "asyncpg>=0.29.0",
+    "uvicorn>=0.27.1",
+    "bcrypt>=4.1.2",
+    "pydantic[email]>=2.6.3",
+    "sentry-sdk>=1.40.6",
+    "litestar-users>=1.2.2",
+]
+requires-python = "==3.12.*"
+readme = "README.md"
+license = {text = "MIT"}
+
+
+[tool.pdm]
+distribution = false

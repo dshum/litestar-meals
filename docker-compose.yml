@@ -1,0 +1,48 @@
+version: '3.9'
+
+services:
+  app:
+    container_name: meals
+    env_file: .env
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./src:/app/src
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "${WEB_EXTERNAL_PORT:-8000}:8000"
+    restart: unless-stopped
+    tty: true
+
+  db:
+    container_name: meals-db
+    image: postgres:15-alpine
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    ports:
+      - "${DB_EXTERNAL_PORT:-5432}:5432"
+    expose:
+      - 5432
+    environment:
+      POSTGRES_USER: ${DATABASE_USER:-postgres}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD:-password}
+      POSTGRES_DB: ${DATABASE_NAME:-test}
+    restart: unless-stopped
+    tty: true
+
+  redis:
+    container_name: meals-redis
+    image: redis:latest
+    volumes:
+      - cache:/data
+    ports:
+      - "${REDIS_EXTERNAL_PORT:-6379}:6379"
+    restart: unless-stopped
+    tty: true
+
+volumes:
+  postgres_data: { }
+  cache: { }
