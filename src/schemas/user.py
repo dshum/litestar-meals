@@ -2,24 +2,12 @@ from dataclasses import dataclass
 
 from advanced_alchemy.extensions.litestar import SQLAlchemyDTO, SQLAlchemyDTOConfig
 from litestar.dto import DataclassDTO
-from pydantic import BaseModel, EmailStr, SecretStr
 
 from models import User
 
 
-class LoginUserSchema(BaseModel):
-    email: EmailStr
-    password: SecretStr
-
-
-class UpdatePasswordSchema(BaseModel):
-    current_password: SecretStr
-    password: SecretStr
-    confirm_password: SecretStr
-
-
 @dataclass
-class UserRegistrationSchema(BaseModel):
+class UserRegistrationSchema:
     email: str
     password: str
     first_name: str
@@ -31,8 +19,13 @@ class UserRegistrationDTO(DataclassDTO[UserRegistrationSchema]):
 
 
 class UserReadDTO(SQLAlchemyDTO[User]):
-    config = SQLAlchemyDTOConfig(exclude={"password_hash"})
+    config = SQLAlchemyDTOConfig(
+        include={"id", "first_name", "last_name", "email", "created_at"},
+    )
 
 
 class UserUpdateDTO(SQLAlchemyDTO[User]):
-    config = SQLAlchemyDTOConfig(exclude={"password_hash"}, partial=True)
+    config = SQLAlchemyDTOConfig(
+        include={"first_name", "last_name"},
+        partial=True,
+    )
