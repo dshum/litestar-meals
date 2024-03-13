@@ -1,7 +1,6 @@
-from dataclasses import field
-
+from advanced_alchemy.exceptions import ConflictError
 from advanced_alchemy.extensions.litestar import SQLAlchemyPlugin
-from litestar import Litestar, get
+from litestar import Litestar
 from litestar.config.app import ExperimentalFeatures
 from litestar.exceptions import HTTPException
 from litestar.security.jwt import JWTAuth
@@ -13,13 +12,13 @@ from litestar_users.config import AuthHandlerConfig, RegisterHandlerConfig, Veri
 from api import site_router
 from lib import settings, database, sentry
 from lib.exceptions import default_exception_handler
-from lib.jwt import jwt_auth
+from lib.jwt import CustomJWTAuth
 from models.user import UserService, User
 from schemas.user import UserRegistrationDTO, UserUpdateDTO, UserReadDTO
 
 litestar_users = LitestarUsersPlugin(
     config=LitestarUsersConfig(
-        auth_backend_class=JWTAuth,
+        auth_backend_class=CustomJWTAuth,
         secret=settings.jwt.SECRET,
         user_model=User,  # pyright: ignore
         user_read_dto=UserReadDTO,
@@ -39,10 +38,10 @@ app = Litestar(
     route_handlers=[site_router],
     plugins=[SQLAlchemyPlugin(database.db_config), litestar_users],
     on_startup=[sentry.on_startup, database.on_startup],
-    # on_app_init=[litestar_users.on_app_init],
     exception_handlers={
         HTTP_500_INTERNAL_SERVER_ERROR: default_exception_handler,
         HTTPException: default_exception_handler,
+        ConflictError: default_exception_handler,
     },
     debug=settings.app.DEBUG,
     experimental_features=[ExperimentalFeatures.DTO_CODEGEN],
