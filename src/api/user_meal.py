@@ -8,11 +8,14 @@ from litestar.dto import DTOConfig, DTOData
 from litestar.pagination import OffsetPagination
 from litestar.params import Parameter
 
-from api.dependencies import provide_meal_service, provide_limit_offset_pagination, provide_order_by, \
-    provide_user_meal_service, provide_user_service
+from api.dependencies import (
+    provide_meal_service,
+    provide_limit_offset_pagination,
+    provide_order_by,
+    provide_user_meal_service,
+)
 from models import UserMeal
-from models.meal import MealService, Meal
-from models.user import UserService
+from models.meal import MealService
 from models.user_meal import UserMealService
 
 
@@ -33,7 +36,6 @@ class UserMealController(Controller):
     dependencies = {
         "limit_offset": Provide(provide_limit_offset_pagination),
         "order_by": Provide(provide_order_by),
-        "user_service": Provide(provide_user_service),
         "meal_service": Provide(provide_meal_service),
         "user_meal_service": Provide(provide_user_meal_service),
     }
@@ -44,7 +46,6 @@ class UserMealController(Controller):
     async def create_user_meal(
             self,
             request: Request,
-            user_service: UserService,
             user_meal_service: UserMealService,
             meal_service: MealService,
             data: DTOData[UserMeal],
@@ -54,7 +55,6 @@ class UserMealController(Controller):
         user_meal = UserMeal(weight=data.weight)
         user_meal.meal = meal
         request.user.meals.append(user_meal)
-        await user_service.update(request.user)
         return user_meal
 
     @get(path="/")

@@ -8,20 +8,37 @@ from litestar.dto import DTOConfig, DTOData
 from litestar.pagination import OffsetPagination
 from litestar.params import Parameter
 
-from api.dependencies import provide_meal_service, provide_limit_offset_pagination, provide_order_by
+from api.dependencies import provide_meal_service, provide_limit_offset_pagination, provide_order_by, \
+    provide_meal_store_service, provide_meal_brand_service
 from models.meal import MealService, Meal
+from models.meal_brand import MealBrandService
+from models.meal_store import MealStoreService
 
 
 class ReadDTO(SQLAlchemyDTO[Meal]):
-    config = DTOConfig(exclude={"user_id", "creator", "updated_at"})
+    config = DTOConfig(
+        include={
+            "id", "name", "weight", "calories", "created_at",
+            "store.id", "store.name",
+            "brand.id", "brand.name",
+        },
+    )
 
 
 class CreateDTO(SQLAlchemyDTO[Meal]):
-    config = DTOConfig(exclude={"user_id", "creator", "created_at", "updated_at"})
+    config = DTOConfig(
+        include={
+            "name", "weight", "calories",
+            "store.name", "brand.name",
+        },
+    )
 
 
 class PatchDTO(SQLAlchemyDTO[Meal]):
-    config = DTOConfig(exclude={"user_id", "creator", "created_at", "updated_at"}, partial=True)
+    config = DTOConfig(
+        include={"name", "weight", "calories"},
+        partial=True,
+    )
 
 
 class MealController(Controller):
@@ -30,18 +47,29 @@ class MealController(Controller):
         "limit_offset": Provide(provide_limit_offset_pagination),
         "order_by": Provide(provide_order_by),
         "meal_service": Provide(provide_meal_service),
+        "meal_store_service": Provide(provide_meal_store_service),
+        "meal_brand_service": Provide(provide_meal_brand_service),
     }
-    dto = CreateDTO
     return_dto = ReadDTO
 
-    @post(path="/")
+    @post(path="/", dto=CreateDTO)
     async def create_meal(
             self,
             request: Request,
+            meal_store_service: MealStoreService,
+            meal_brand_service: MealBrandService,
             meal_service: MealService,
             data: DTOData[Meal],
     ) -> Meal:
         data = data.create_instance(user_id=request.user.id)
+        data.store, created = await meal_store_service.get_or_upsert(
+            match_fields=["name"],
+            name=data.store.name,
+        )
+        data.brand, created = await meal_brand_service.get_or_upsert(
+            match_fields=["name"],
+            name=data.brand.name,
+        )
         return await meal_service.create(data)
 
     @get(path="/")

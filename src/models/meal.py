@@ -1,34 +1,40 @@
 from decimal import Decimal
 from enum import Enum
-from typing import List, TYPE_CHECKING
+from typing import List, TYPE_CHECKING, Any
 from uuid import UUID
 
-from advanced_alchemy import SQLAlchemyAsyncRepository, SQLAlchemyAsyncRepositoryService
+from advanced_alchemy import SQLAlchemyAsyncRepository, SQLAlchemyAsyncRepositoryService, ModelT
 from advanced_alchemy.base import UUIDAuditBase
 from sqlalchemy import String, DECIMAL, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:
-    from models import User, UserMeal
-
-
-class Store(str, Enum):
-    OZON = "Ozon"
-    VKUSVILL = "Vkusvill"
-    VARIOUS = "Various"
+    from models import User, UserMeal, MealStore, MealBrand
 
 
 class Meal(UUIDAuditBase):
     __tablename__ = 'meals'
 
     name: Mapped[str] = mapped_column(String(1000))
-    store: Mapped[Store]
     weight: Mapped[int | None] = mapped_column(nullable=True)
     calories: Mapped[Decimal]
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), index=True)
+    meal_store_id: Mapped[UUID] = mapped_column(ForeignKey("meal_stores.id"), index=True)
+    meal_brand_id: Mapped[UUID] = mapped_column(ForeignKey("meal_brands.id"), index=True)
     creator: Mapped["User"] = relationship(
         foreign_keys=[user_id],
         back_populates="created_meals",
+        lazy="noload",
+    )
+    store: Mapped["MealStore"] = relationship(
+        foreign_keys=[meal_store_id],
+        back_populates="meals",
+        lazy="selectin",
+    )
+    brand: Mapped["MealBrand"] = relationship(
+        foreign_keys=[meal_brand_id],
+        back_populates="meals",
+        lazy="selectin",
     )
     users: Mapped[List["UserMeal"]] = relationship(back_populates="meal")
 
