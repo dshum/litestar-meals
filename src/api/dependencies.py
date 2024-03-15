@@ -1,13 +1,16 @@
 from typing import Literal
 
+from litestar import Request
 from litestar.params import Parameter
 from litestar.repository.filters import LimitOffset, OrderBy
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from sqlalchemy.orm import selectinload, joinedload
 
-from models.meal import MealService
+from models.meal import MealService, Meal
 from models.meal_brand import MealBrandService
 from models.meal_store import MealStoreService
-from models.user_meal import UserMealService
+from models.user_meal import UserMealService, UserMeal
 
 
 async def provide_limit_offset_pagination(
@@ -33,8 +36,20 @@ async def provide_meal_brand_service(db_session: AsyncSession) -> MealBrandServi
 
 
 async def provide_meal_service(db_session: AsyncSession) -> MealService:
-    return MealService(session=db_session)
+    return MealService(
+        statement=select(Meal).options(selectinload(Meal.store), selectinload(Meal.brand)),
+        session=db_session,
+    )
 
 
-async def provide_user_meal_service(db_session: AsyncSession) -> UserMealService:
-    return UserMealService(session=db_session)
+async def provide_user_meal_service(request: Request, db_session: AsyncSession) -> UserMealService:
+    statement = (
+        select(UserMeal)
+        .where(UserMeal.user_id == request.user.id)
+        .options(selectinload(UserMeal.meal).selectinload(Meal.brand))
+        .options(selectinload(UserMeal.meal).selectinload(Meal.store))
+    )
+    return UserMealService(
+        statement=statement,
+        session=db_session,
+    )

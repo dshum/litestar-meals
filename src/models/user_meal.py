@@ -16,8 +16,14 @@ class UserMeal(UUIDAuditBase):
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), primary_key=True)
     meal_id: Mapped[UUID] = mapped_column(ForeignKey("meals.id"), primary_key=True)
     weight: Mapped[int]
-    user: Mapped["User"] = relationship(back_populates="meals")
-    meal: Mapped["Meal"] = relationship(back_populates="users")
+    user: Mapped["User"] = relationship(
+        back_populates="meals",
+        lazy="selectin",
+    )
+    meal: Mapped["Meal"] = relationship(
+        back_populates="users",
+        lazy="selectin",
+    )
 
 
 class UserMealRepository(SQLAlchemyAsyncRepository[UserMeal]):

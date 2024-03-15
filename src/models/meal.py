@@ -15,7 +15,7 @@ if TYPE_CHECKING:
 class Meal(UUIDAuditBase):
     __tablename__ = 'meals'
 
-    name: Mapped[str] = mapped_column(String(1000))
+    name: Mapped[str] = mapped_column(String(1000), unique=True)
     weight: Mapped[int | None] = mapped_column(nullable=True)
     calories: Mapped[Decimal]
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), index=True)

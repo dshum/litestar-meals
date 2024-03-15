@@ -12,7 +12,7 @@ if TYPE_CHECKING:
 class MealStore(UUIDAuditBase):
     __tablename__ = 'meal_stores'
 
-    name: Mapped[str] = mapped_column(String(255))
+    name: Mapped[str] = mapped_column(String(255), unique=True)
     meals: Mapped[List["Meal"]] = relationship(back_populates="store")
 
 

@@ -20,15 +20,20 @@ from models.user_meal import UserMealService
 
 
 class ReadDTO(SQLAlchemyDTO[UserMeal]):
-    config = DTOConfig(exclude={"updated_at", "user.password", "user.updated_at"})
+    config = DTOConfig(include={
+        "id", "weight", "created_at",
+        "user.id", "user.email", "user.first_name", "user.last_name",
+        "meal.id", "meal.name", "meal.weight",
+        "meal.brand.name", "meal.store.name",
+    }, max_nested_depth=2)
 
 
 class CreateDTO(SQLAlchemyDTO[UserMeal]):
-    config = DTOConfig(exclude={"user_id", "user", "meal", "created_at", "updated_at"})
+    config = DTOConfig(include={"meal_id", "weight"})
 
 
 class PatchDTO(SQLAlchemyDTO[UserMeal]):
-    config = DTOConfig(exclude={"user_id", "user", "meal", "created_at", "updated_at"}, partial=True)
+    config = DTOConfig(include={"meal_id", "weight"}, partial=True)
 
 
 class UserMealController(Controller):
@@ -39,10 +44,9 @@ class UserMealController(Controller):
         "meal_service": Provide(provide_meal_service),
         "user_meal_service": Provide(provide_user_meal_service),
     }
-    dto = CreateDTO
     return_dto = ReadDTO
 
-    @post(path="/")
+    @post(path="/", dto=CreateDTO)
     async def create_user_meal(
             self,
             request: Request,
@@ -50,12 +54,8 @@ class UserMealController(Controller):
             meal_service: MealService,
             data: DTOData[UserMeal],
     ) -> UserMeal:
-        data = data.create_instance()
-        meal = await meal_service.get(data.meal_id)
-        user_meal = UserMeal(weight=data.weight)
-        user_meal.meal = meal
-        request.user.meals.append(user_meal)
-        return user_meal
+        data = data.create_instance(user_id=request.user.id)
+        return await user_meal_service.create(data)
 
     @get(path="/")
     async def list_user_meals(
@@ -73,7 +73,7 @@ class UserMealController(Controller):
         )
 
     @get(path="/{user_meal_id:uuid}")
-    async def get_meal(
+    async def get_user_meal(
             self,
             user_meal_service: UserMealService,
             user_meal_id: UUID = Parameter(
@@ -84,7 +84,7 @@ class UserMealController(Controller):
         return await user_meal_service.get(user_meal_id)
 
     @put(path="/{user_meal_id:uuid}", dto=PatchDTO)
-    async def update_meal(
+    async def update_user_meal(
             self,
             user_meal_service: UserMealService,
             data: DTOData[UserMeal],
@@ -96,7 +96,7 @@ class UserMealController(Controller):
         return await user_meal_service.update(data.create_instance(), user_meal_id)
 
     @delete(path="/{user_meal_id:uuid}", return_dto=None)
-    async def delete_user(
+    async def delete_user_meal(
             self,
             user_meal_service: UserMealService,
             user_meal_id: UUID = Parameter(
@@ -104,4 +104,4 @@ class UserMealController(Controller):
                 description="The user meal to delete",
             ),
     ) -> None:
-        await user_meal_service.delete(user_meal_id, auto_commit=True)
+        await user_meal_service.delete(user_meal_id)
