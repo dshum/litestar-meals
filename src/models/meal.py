@@ -1,11 +1,10 @@
 from decimal import Decimal
-from enum import Enum
-from typing import List, TYPE_CHECKING, Any
+from typing import List, TYPE_CHECKING
 from uuid import UUID
 
-from advanced_alchemy import SQLAlchemyAsyncRepository, SQLAlchemyAsyncRepositoryService, ModelT
+from advanced_alchemy import SQLAlchemyAsyncRepository, SQLAlchemyAsyncRepositoryService
 from advanced_alchemy.base import UUIDAuditBase
-from sqlalchemy import String, DECIMAL, ForeignKey
+from sqlalchemy import String, ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 if TYPE_CHECKING:

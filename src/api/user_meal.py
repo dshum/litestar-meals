@@ -37,7 +37,7 @@ class PatchDTO(SQLAlchemyDTO[UserMeal]):
 
 
 class UserMealController(Controller):
-    path = "/user/meals"
+    path = "/users/me/meals"
     dependencies = {
         "limit_offset": Provide(provide_limit_offset_pagination),
         "order_by": Provide(provide_order_by),

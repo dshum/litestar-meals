@@ -5,7 +5,7 @@ from litestar.params import Parameter
 from litestar.repository.filters import LimitOffset, OrderBy
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
-from sqlalchemy.orm import selectinload, joinedload
+from sqlalchemy.orm import selectinload
 
 from models.meal import MealService, Meal
 from models.meal_brand import MealBrandService

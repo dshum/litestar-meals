@@ -26,6 +26,6 @@ class UserReadDTO(SQLAlchemyDTO[User]):
 
 class UserUpdateDTO(SQLAlchemyDTO[User]):
     config = SQLAlchemyDTOConfig(
-        include={"first_name", "last_name"},
+        include={"new_password", "first_name", "last_name"},
         partial=True,
     )
