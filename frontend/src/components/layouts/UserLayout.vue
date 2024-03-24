@@ -1,5 +1,5 @@
 <template>
-  <TheHeader :user="false" />
+  <TheHeader :user="authStore.user" />
 
   <main class="flex flex-col flex-grow">
     <div class="container py-4">
@@ -11,7 +11,14 @@
 </template>
 
 <script setup>
-import { RouterLink } from 'vue-router'
+import { onMounted } from 'vue'
 import TheHeader from '@/components/TheHeader.vue'
 import TheFooter from '@/components/TheFooter.vue'
+import { useAuthStore } from '@/stores/auth.js'
+
+const authStore = useAuthStore()
+
+onMounted(async () => {
+  await authStore.getUser()
+})
 </script>

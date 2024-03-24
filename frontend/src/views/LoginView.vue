@@ -1,19 +1,16 @@
 <script setup>
 import GuestLayout from '@/components/layouts/GuestLayout.vue'
-import { RouterLink, useRouter } from 'vue-router'
+import { RouterLink } from 'vue-router'
 import { ref } from 'vue'
-import axios from 'axios'
+import { useAuthStore } from '@/stores/auth.js'
+import Alert from '@/components/Alert.vue'
 
-const router = useRouter()
+const authStore = useAuthStore()
 const form = ref({
   email: '',
   password: ''
 })
-
-const submit = async () => {
-  await axios.post('/login', form.value)
-  await router.push({ name: 'home' })
-}
+let message = ''
 </script>
 
 <template>
@@ -29,14 +26,16 @@ const submit = async () => {
         </div>
 
         <div class="card min-w-96 max-w-sm shadow-2xl shadow-sky-200 bg-base-100">
-          <form class="card-body" @submit.prevent="submit">
+          <Alert class="alert-warning" :open="false">{{ message }}</Alert>
+
+          <form class="card-body" @submit.prevent="authStore.login(form)">
             <div class="form-control">
               <label class="label">
                 <span class="label-text">Email</span>
               </label>
               <input type="email" v-model="form.email"
                      placeholder="email" class="input input-bordered" required
-                     autocomplete="false" />
+                     autocomplete="true" />
             </div>
 
             <div class="form-control">
@@ -45,7 +44,7 @@ const submit = async () => {
               </label>
               <input type="password" v-model="form.password"
                      placeholder="password" class="input input-bordered" required
-                     autocomplete="false" />
+                     autocomplete="true" />
               <label class="label">
                 <a href="#" class="label-text-alt link link-hover">Forgot password?</a>
               </label>

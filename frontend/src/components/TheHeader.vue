@@ -1,7 +1,15 @@
+<script setup>
+import { RouterLink } from 'vue-router'
+import { useAuthStore } from '@/stores/auth.js'
+
+const props = defineProps(['user'])
+const authStore = useAuthStore()
+</script>
+
 <template>
   <header class="sticky top-0 z-20 backdrop-blur-md bg-white/70">
     <div class="container">
-      <nav class="flex justify-between items-center py-2">
+      <nav class="flex justify-between items-center h-16 py-2">
         <div class="text-xl">
           <RouterLink to="/">Meals</RouterLink>
         </div>
@@ -17,24 +25,16 @@
           </ul>
         </div>
 
-        <div v-if="user">
-          <RouterLink to="/register" class="block py-2">
-            {{ user.name }}
+        <div v-if="user" class="flex flex-row items-center space-x-2">
+          <RouterLink :to="{name: 'home'}">
+            <div class="w-12 h-12 rounded-full bg-amber-300 flex flex-col items-center justify-center">
+              <div>DS</div>
+            </div>
           </RouterLink>
-        </div>
 
-        <div v-else>
-          <RouterLink to="/register" class="block bg-teal-600 hover:bg-teal-700 text-white rounded-full px-6 py-2">
-            Sign Up
-          </RouterLink>
+          <a href="#" class="" @click.prevent="authStore.logout">Logout</a>
         </div>
       </nav>
     </div>
   </header>
 </template>
-
-<script setup>
-import { RouterLink } from 'vue-router'
-
-const props = defineProps(['user'])
-</script>

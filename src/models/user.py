@@ -47,7 +47,7 @@ class User(UUIDAuditBase, SQLAlchemyUserMixin):
 
 class UserService(BaseUserService[User, Any]):
     async def post_registration_hook(self, user: User, request: Request | None = None) -> None:
-        print(f"User <{user.email}> has registered!")
+        request.app.emit(event_id="user_registered", user_id=user.id)
 
     async def post_login_hook(self, user: User, request: Request | None = None) -> None:
-        print(f"User <{user.email}> logged in")
+        request.app.emit(event_id="user_logged", user_id=user.id)

@@ -15,11 +15,16 @@ import UserLayout from '@/components/layouts/UserLayout.vue'
 import { onMounted, ref } from 'vue'
 import axios from 'axios'
 
-
 const meals = ref({ items: [], limit: 0, offset: 0, total: 0 })
 
 onMounted(async () => {
-  const response = await axios.get('/meals')
-  meals.value = response.data
+  await getMeals()
 })
+
+async function getMeals() {
+  await axios.get('/meals').then(({ data }) => {
+    meals.value = data
+  }).catch(() => {
+  })
+}
 </script>

@@ -1,3 +1,19 @@
+<script setup>
+import GuestLayout from '@/components/layouts/GuestLayout.vue'
+import { RouterLink } from 'vue-router'
+import { ref } from 'vue'
+import { useAuthStore } from '@/stores/auth.js'
+
+
+const authStore = useAuthStore()
+const form = ref({
+  email: '',
+  password: '',
+  first_name: '',
+  last_name: ''
+})
+</script>
+
 <template>
   <GuestLayout>
     <div class="hero">
@@ -11,40 +27,41 @@
         </div>
 
         <div class="card min-w-96 max-w-sm shadow-2xl shadow-sky-200 bg-base-100">
-          <form class="card-body">
+          <form class="card-body" @submit.prevent="authStore.register(form)">
             <div class="form-control">
               <label class="label">
                 <span class="label-text">Email</span>
               </label>
-              <input v-model="email" type="email" placeholder="email" class="input input-bordered" required />
+              <input v-model="form.email" type="email"
+                     placeholder="email" class="input input-bordered"
+                     required autocomplete="false" />
             </div>
 
             <div class="form-control">
               <label class="label">
                 <span class="label-text">Password</span>
               </label>
-              <input v-model="password" type="password" placeholder="password" class="input input-bordered" required />
-            </div>
-
-            <div class="form-control">
-              <label class="label">
-                <span class="label-text">Confirm password</span>
-              </label>
-              <input v-model="confirm_password" type="password" placeholder="confirm password" class="input input-bordered" required />
+              <input v-model="form.password" type="password"
+                     placeholder="password" class="input input-bordered"
+                     required autocomplete="false" />
             </div>
 
             <div class="form-control">
               <label class="label">
                 <span class="label-text">First name</span>
               </label>
-              <input v-model="first_name" type="text" placeholder="first name" class="input input-bordered" required />
+              <input v-model="form.first_name" type="text"
+                     placeholder="first name" class="input input-bordered"
+                     required />
             </div>
 
             <div class="form-control">
               <label class="label">
                 <span class="label-text">Last name</span>
               </label>
-              <input v-model="last_name" type="text" placeholder="last name" class="input input-bordered" required />
+              <input v-model="form.last_name" type="text"
+                     placeholder="last name" class="input input-bordered"
+                     required />
             </div>
 
             <div class="form-control mt-6">
@@ -56,15 +73,3 @@
     </div>
   </GuestLayout>
 </template>
-
-<script setup>
-import GuestLayout from '@/components/layouts/GuestLayout.vue'
-import { RouterLink } from 'vue-router'
-import { ref } from 'vue'
-
-const email = ref('')
-const password = ref('')
-const confirm_password = ref('')
-const first_name = ref('')
-const last_name = ref('')
-</script>
