@@ -5,8 +5,11 @@ import router from '@/router/index.js'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref()
+  const userName = computed(() => {
+    return user.value.first_name + ' ' + user.value.last_name
+  })
   const avatarName = computed(() => {
-    return user.value.first_name[0]
+    return user.value.first_name[0] + user.value.last_name[0]
   })
   const error = ref()
   const returnUrl = ref(null)
@@ -19,7 +22,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function login(form) {
-    errors.value = {}
+    error.value = null
 
     await axios.post('/login', {
       email: form.email,
@@ -49,6 +52,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { user, avatarName, getUser, login, logout, error, returnUrl }
+  return { user, userName, avatarName, getUser, login, logout, error, returnUrl }
 })
 

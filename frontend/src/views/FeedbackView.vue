@@ -44,8 +44,8 @@ const schema = yup.object({
                 <TextareaField name="message" label="Message" rows="10" />
               </div>
 
-              <div class="form-control max-w-xs mt-6">
-                <button class="btn btn-primary">Submit</button>
+              <div class="form-control mt-4">
+                <button class="btn btn-primary max-w-xs">Submit</button>
               </div>
             </form>
           </div>

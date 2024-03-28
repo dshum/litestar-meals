@@ -24,7 +24,7 @@ const schema = yup.object({
   <GuestLayout>
     <div class="hero w-full">
       <div class="hero-content w-full flex-col lg:flex-row-reverse gap-x-[4vw]">
-        <div class="flex-1 w-full text-center lg:text-left">
+        <div class="flex-initial w-full text-center lg:text-left">
           <h1 class="mb-6 text-5xl font-bold">Join now!</h1>
           <p class="py-2">Register to get an access to your food diary.</p>
           <p class="py-2">Already have an account?
@@ -32,7 +32,7 @@ const schema = yup.object({
           </p>
         </div>
 
-        <div class="flex-1 w-full card shadow-2xl shadow-sky-200 bg-base-100">
+        <div class="flex-initial w-full card shadow-2xl shadow-sky-200 bg-base-100">
           <div class="card-body">
             <ul v-if="userStore.error" class="text-error">
               <li>{{ userStore.error }}</li>
@@ -59,7 +59,7 @@ const schema = yup.object({
                 <InputField type="text" name="last_name" label="Last name" />
               </div>
 
-              <div class="form-control mt-6">
+              <div class="form-control mt-4">
                 <button class="btn btn-primary">Register</button>
               </div>
             </Form>

@@ -6,7 +6,8 @@ defineProps({
   type: String,
   as: String,
   label: String,
-  placeholder: String
+  placeholder: String,
+  readonly: Boolean
 })
 </script>
 
@@ -15,7 +16,9 @@ defineProps({
     <span class="label-text">{{ label }}</span>
   </label>
   <Field :name="name" :type="type" :as="as" :placeholder="placeholder || label"
-         class="input input-bordered" autocomplete="false" />
+         class="input input-bordered" autocomplete="false"
+         :readonly="readonly"
+  />
   <div class="label">
     <span class="label-text-alt text-error"><ErrorMessage :name="name" /></span>
   </div>
