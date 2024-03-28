@@ -12,7 +12,7 @@ from lib.exceptions import default_exception_handler
 from lib.users import litestar_users
 
 cors_config = CORSConfig(
-    allow_origins=["http://localhost:5173"],
+    allow_origins=["http://localhost:5173", "http://localhost:5174"],
     allow_methods=["*"],
     allow_credentials=True,
 )

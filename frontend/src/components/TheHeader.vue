@@ -2,7 +2,6 @@
 import { RouterLink } from 'vue-router'
 import { useAuthStore } from '@/stores/auth.js'
 
-const props = defineProps(['user'])
 const authStore = useAuthStore()
 </script>
 
@@ -14,7 +13,7 @@ const authStore = useAuthStore()
           <RouterLink to="/">Meals</RouterLink>
         </div>
 
-        <div v-if="user">
+        <div v-if="authStore.user">
           <ul class="flex items-center gap-[4vw]">
             <li>
               <RouterLink to="/" class="hover:text-gray-500">Meals</RouterLink>
@@ -25,14 +24,16 @@ const authStore = useAuthStore()
           </ul>
         </div>
 
-        <div v-if="user" class="flex flex-row items-center space-x-2">
-          <RouterLink :to="{name: 'home'}">
-            <div class="w-12 h-12 rounded-full bg-amber-300 flex flex-col items-center justify-center">
-              <div>DS</div>
-            </div>
-          </RouterLink>
-
-          <a href="#" class="" @click.prevent="authStore.logout">Logout</a>
+        <div v-if="authStore.user" class="dropdown dropdown-end">
+          <div tabindex="0" role="button"
+               class="w-12 h-12 rounded-full bg-amber-300 flex flex-col items-center justify-center">
+            <div>{{ authStore.avatarName }}</div>
+          </div>
+          <ul tabindex="0" class="menu dropdown-content mt-3 z-[1] p-2 shadow bg-base-100 rounded-box w-52">
+            <li><a>Profile</a></li>
+            <li><a>Settings</a></li>
+            <li><a @click.prevent="authStore.logout">Logout</a></li>
+          </ul>
         </div>
       </nav>
     </div>

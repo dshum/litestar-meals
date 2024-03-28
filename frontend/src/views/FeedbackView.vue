@@ -2,14 +2,18 @@
 import { RouterLink } from 'vue-router'
 import { Form } from 'vee-validate'
 import * as yup from 'yup'
-import { useAuthStore } from '@/stores/auth.js'
 import GuestLayout from '@/components/layouts/GuestLayout.vue'
 import InputField from '@/components/forms/InputField.vue'
+import TextareaField from '@/components/forms/TextareaField.vue'
 
-const authStore = useAuthStore()
+const onSubmit = async (values) => {
+  console.log(values)
+}
+
 const schema = yup.object({
-  email: yup.string().email('Email must a valid email').required('Email is required'),
-  password: yup.string().required('Password is required')
+  email: yup.string().email().required(),
+  name: yup.string().required(),
+  message: yup.string().required()
 })
 </script>
 
@@ -18,32 +22,32 @@ const schema = yup.object({
     <div class="hero w-full">
       <div class="hero-content w-full flex-col lg:flex-row-reverse gap-x-[4vw]">
         <div class="flex-1 w-full text-center lg:text-left">
-          <h1 class="mb-6 text-5xl font-bold">Login now!</h1>
-          <p class="py-2">Log in to access your food diary.</p>
-          <p class="py-2">Haven't registered yet?
-            <RouterLink to="/register" class="underline">Create an account</RouterLink>
+          <h1 class="mb-6 text-5xl font-bold">Feedback</h1>
+          <p class="py-2">Here you can ask questions and leave suggestions.</p>
+          <p class="py-2">
+            <RouterLink :to="{name: 'home'}" class="underline">Return to the main page</RouterLink>
           </p>
         </div>
 
         <div class="flex-1 w-full card shadow-2xl shadow-sky-200 bg-base-100">
           <div class="card-body">
-            <ul v-if="authStore.error" class="text-error">
-              <li>{{ authStore.error }}</li>
-            </ul>
-
-            <Form :validation-schema="schema" @submit="authStore.login">
+            <Form :validation-schema="schema" @submit="onSubmit">
               <div class="form-control">
                 <InputField type="email" name="email" label="Email" />
               </div>
 
               <div class="form-control">
-                <InputField type="password" name="password" label="Password" />
+                <InputField type="text" name="name" label="Name" />
               </div>
 
-              <div class="form-control mt-6">
-                <button class="btn btn-primary">Login</button>
+              <div class="form-control">
+                <TextareaField name="message" label="Message" rows="10" />
               </div>
-            </Form>
+
+              <div class="form-control max-w-xs mt-6">
+                <button class="btn btn-primary">Submit</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

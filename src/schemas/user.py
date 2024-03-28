@@ -1,20 +1,25 @@
-from dataclasses import dataclass
+from typing import TYPE_CHECKING
 
 from advanced_alchemy.extensions.litestar import SQLAlchemyDTO, SQLAlchemyDTOConfig
-from litestar.dto import DataclassDTO
+from litestar.contrib.pydantic import PydanticDTO
+from pydantic import BaseModel, Field, EmailStr, SecretStr
 
 from models import User
 
 
-@dataclass
-class UserRegistrationSchema:
+class UserRegistrationSchema(BaseModel):
+    email: str
+    password: str = Field(min_length=6)
+    first_name: str = Field(min_length=1)
+    last_name: str = Field(min_length=1)
+
+
+class UserLoginSchema(BaseModel):
     email: str
     password: str
-    first_name: str
-    last_name: str
 
 
-class UserRegistrationDTO(DataclassDTO[UserRegistrationSchema]):
+class UserRegistrationDTO(PydanticDTO[UserRegistrationSchema]):
     """User registration DTO."""
 
 

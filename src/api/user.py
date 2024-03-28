@@ -2,50 +2,49 @@ from typing import cast
 
 from litestar import Controller, post, Response, Request
 from litestar.di import Provide
-from litestar.dto import DTOData
-from litestar.exceptions import NotAuthorizedException
+from litestar.exceptions import NotAuthorizedException, PermissionDeniedException
 from litestar_users.dependencies import provide_user_service
-from litestar_users.schema import AuthenticationSchema
 
 from lib.jwt import auth
 from models import User
 from models.user import UserService
-from schemas.user import UserRegistrationDTO, UserReadDTO, UserRegistrationSchema
+from schemas.user import UserReadDTO, UserRegistrationSchema, UserLoginSchema
 
 
 class UserController(Controller):
     """
     @post(
-        path="/register/login",
+        path="/register",
         dependencies={"service": Provide(provide_user_service, sync_to_thread=False)},
-        dto=UserRegistrationDTO,
         return_dto=UserReadDTO,
         exclude_from_auth=True,
     )
-    async def register_and_login(
+    async def register(
             self,
             request: Request,
-            data: DTOData[UserRegistrationSchema],
+            data: UserRegistrationSchema,
             service: UserService,
-    ) -> Response[User]:
-        user = cast(User, await service.register(data.as_builtins(), request))
-        return auth.login(identifier=str(user.id), response_body=cast(User, user))
+    ) -> User:
+        data = data.dict()
+        return cast(User, await service.register(data, request))
 
     @post(
-        "/login/unverified",
+        "/login",
         dependencies={"service": Provide(provide_user_service, sync_to_thread=False)},
         return_dto=UserReadDTO,
         exclude_from_auth=True,
     )
-    async def login_unverified(
+    async def login(
             self,
             request: Request,
-            data: AuthenticationSchema,
+            data: UserLoginSchema,
             service: UserService,
     ) -> Response[User]:
         user = await service.authenticate(data, request)
         if user is None:
-            raise NotAuthorizedException(detail="login failed, invalid input")
+            raise NotAuthorizedException(detail="Incorrect email or password")
+        if user.is_verified is False:
+            raise PermissionDeniedException(detail="User is not verified")
         return auth.login(identifier=str(user.id), response_body=cast(User, user))
     """
 

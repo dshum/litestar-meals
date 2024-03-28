@@ -1,11 +1,11 @@
 from typing import List, TYPE_CHECKING, Any
 
-import bcrypt
 from advanced_alchemy.base import UUIDAuditBase
 from litestar import Request
 from litestar_users.adapter.sqlalchemy.mixins import SQLAlchemyUserMixin
 from litestar_users.password import PasswordManager
 from litestar_users.service import BaseUserService
+from pydantic import BaseModel, Field
 from sqlalchemy import String
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -47,7 +47,9 @@ class User(UUIDAuditBase, SQLAlchemyUserMixin):
 
 class UserService(BaseUserService[User, Any]):
     async def post_registration_hook(self, user: User, request: Request | None = None) -> None:
-        request.app.emit(event_id="user_registered", user_id=user.id)
+        # request.app.emit(event_id="user_registered", user_id=user.id)
+        pass
 
     async def post_login_hook(self, user: User, request: Request | None = None) -> None:
-        request.app.emit(event_id="user_logged", user_id=user.id)
+        # request.app.emit(event_id="user_logged", user_id=user.id)
+        pass

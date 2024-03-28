@@ -11,5 +11,5 @@
 <script setup>
 import { RouterLink } from 'vue-router'
 import TheFooter from '@/components/TheFooter.vue'
-import Alert from '@/components/Alert.vue'
+import Alert from '@/components/AlertMessage.vue'
 </script>
