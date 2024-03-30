@@ -29,7 +29,7 @@ const authStore = useAuthStore()
           <ul tabindex="0" class="dropdown-content mt-3 z-[1] bg-base-100 rounded-box shadow w-52 p-2 menu">
             <li class="menu-title">
               <div class="text-accent">{{ authStore.userName }}</div>
-              <div class="text-sm font-normal text-secondary-content">{{ authStore.user.email }}</div>
+              <div class="text-sm font-normal text-secondary-content">{{ authStore.user?.email }}</div>
             </li>
             <li>
               <RouterLink :to="{name: 'profile'}">Profile</RouterLink>

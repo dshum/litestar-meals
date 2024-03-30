@@ -1,21 +1,21 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import axios from 'axios'
+import { client } from "@/axios.js";
 import router from '@/router/index.js'
 
 export const useAuthStore = defineStore('auth', () => {
   const user = ref()
   const userName = computed(() => {
-    return user.value.first_name + ' ' + user.value.last_name
+    return user.value ? user.value.first_name + ' ' + user.value.last_name : ''
   })
   const avatarName = computed(() => {
-    return user.value.first_name[0] + user.value.last_name[0]
+    return user.value ? user.value.first_name[0] + user.value.last_name[0] : ''
   })
   const error = ref()
   const returnUrl = ref(null)
 
   async function getUser() {
-    await axios.get('/users/me').then(({ data }) => {
+    await client.get('/users/me').then(({data}) => {
       user.value = data
     }).catch(() => {
     })
@@ -24,24 +24,24 @@ export const useAuthStore = defineStore('auth', () => {
   async function login(form) {
     error.value = null
 
-    await axios.post('/login', {
+    await client.post('/login', {
       email: form.email,
       password: form.password
-    }).then(({ data }) => {
+    }).then(({data}) => {
       user.value = data
       if (returnUrl.value) {
         router.push(returnUrl.value)
         returnUrl.value = null
       } else {
-        router.push({ name: 'home' })
+        router.push({name: 'home'})
       }
     }).catch(handleErrors)
   }
 
   async function logout() {
-    await axios.post('/logout').then(() => {
+    await client.post('/logout').then(() => {
       user.value = null
-      router.push({ name: 'login' })
+      router.push({name: 'login'})
     }).catch(() => {
     })
   }
@@ -52,6 +52,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return { user, userName, avatarName, getUser, login, logout, error, returnUrl }
+  return {user, userName, avatarName, getUser, login, logout, error, returnUrl}
 })
 
