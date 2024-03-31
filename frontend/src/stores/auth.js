@@ -1,6 +1,6 @@
 import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
-import { client } from "@/axios.js";
+import { client, isBlocked } from '@/axios.js'
 import router from '@/router/index.js'
 
 export const useAuthStore = defineStore('auth', () => {
@@ -13,9 +13,12 @@ export const useAuthStore = defineStore('auth', () => {
   })
   const error = ref()
   const returnUrl = ref(null)
+  const logging = computed(() => {
+    return isBlocked('/login')
+  })
 
   async function getUser() {
-    await client.get('/users/me').then(({data}) => {
+    await client.get('/users/me').then(({ data }) => {
       user.value = data
     }).catch(() => {
     })
@@ -27,13 +30,13 @@ export const useAuthStore = defineStore('auth', () => {
     await client.post('/login', {
       email: form.email,
       password: form.password
-    }).then(({data}) => {
+    }).then(({ data }) => {
       user.value = data
       if (returnUrl.value) {
         router.push(returnUrl.value)
         returnUrl.value = null
       } else {
-        router.push({name: 'home'})
+        router.push({ name: 'home' })
       }
     }).catch(handleErrors)
   }
@@ -41,7 +44,7 @@ export const useAuthStore = defineStore('auth', () => {
   async function logout() {
     await client.post('/logout').then(() => {
       user.value = null
-      router.push({name: 'login'})
+      router.push({ name: 'login' })
     }).catch(() => {
     })
   }
@@ -52,6 +55,6 @@ export const useAuthStore = defineStore('auth', () => {
     }
   }
 
-  return {user, userName, avatarName, getUser, login, logout, error, returnUrl}
+  return { user, userName, avatarName, getUser, login, logout, logging, error, returnUrl }
 })
 

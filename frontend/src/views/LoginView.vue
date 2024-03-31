@@ -41,7 +41,10 @@ const schema = yup.object({
               </div>
 
               <div class="form-control mt-4">
-                <button class="btn btn-primary">Login</button>
+                <button class="btn btn-primary max-w-xs">
+                  <span v-if="authStore.logging" class="loading loading-ring loading-lg"></span>
+                  <span v-else>Login</span>
+                </button>
               </div>
             </Form>
           </div>

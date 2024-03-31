@@ -1,62 +1,45 @@
-import { ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import router from '@/router/index.js'
-import { client, sleep } from '@/axios.js'
+import { client, isBlocked } from '@/axios.js'
 import { useAuthStore } from '@/stores/auth.js'
-
-// client.interceptors.response.use(async (response) => {
-//   if (process.env.NODE_ENV === 'development') {
-//     await sleep();
-//   }
-//   return response.data;
-// });
+import { CanceledError } from 'axios'
 
 export const useUserStore = defineStore('user', () => {
   const error = ref()
-  const loading = ref(false)
+  const registering = computed(() => {
+    return isBlocked('/register')
+  })
+  const updating = computed(() => {
+    return isBlocked('/users/me')
+  })
 
   async function register(form) {
     error.value = null
-    loading.value = true
 
-    await client.post('/register', {
-      email: form.email,
-      password: form.password,
-      first_name: form.first_name,
-      last_name: form.last_name
-    }).then(() => {
+    await client.post('/register', form).then(() => {
       router.push({ name: 'registered' })
-    }).catch(handleErrors).finally(() => {
-      loading.value = false
-    })
+    }).catch(handleErrors)
   }
 
   async function update(form) {
-    if (loading.value) {
-      return
-    }
-    loading.value = true
+    error.value = null
 
-    await client.patch('/users/me', {
-      first_name: form.first_name,
-      last_name: form.last_name
-    }).then(({ data }) => {
+    await client.patch('/users/me', form).then(({ data }) => {
       const authStore = useAuthStore()
       authStore.user = data
-    }).catch(handleErrors).finally(() => {
-      return new Promise((resolve) => setTimeout(resolve, 400))
-    }).then(() => {
-      loading.value = false
-    })
+    }).catch(handleErrors)
   }
 
 
   async function handleErrors(error) {
-    if (error.response.data.detail) {
+    if (error instanceof CanceledError) {
+
+    } else if (error.response.data.detail) {
       error.value = error.response.data.detail
     }
   }
 
-  return { register, update, loading, error }
+  return { register, update, registering, updating, error }
 })
 

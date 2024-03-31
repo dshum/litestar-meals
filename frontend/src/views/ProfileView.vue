@@ -49,7 +49,7 @@ const schema = yup.object({
 
           <div class="form-control mt-4">
             <button class="btn btn-primary max-w-xs">
-              <span v-if="userStore.loading" class="loading loading-ring loading-lg"></span>
+              <span v-if="userStore.updating" class="loading loading-ring loading-lg"></span>
               <span v-else>Save</span>
             </button>
           </div>
