@@ -15,11 +15,9 @@ const authStore = useAuthStore()
 
         <ul class="flex items-center gap-[4vw]">
           <li>
-            <RouterLink :to="{name: 'about'}" class="hover:text-gray-500">Calories</RouterLink>
+            <RouterLink :to="{name: 'products'}" class="hover:text-gray-500">Products</RouterLink>
           </li>
         </ul>
-
-        <button class="btn btn-accent rounded-full">Add meal</button>
 
         <div class="dropdown dropdown-end">
           <div tabindex="0" role="button"

@@ -12,7 +12,7 @@ export const useAuthStore = defineStore('auth', () => {
     return user.value ? user.value.first_name[0] + user.value.last_name[0] : ''
   })
   const error = ref()
-  const returnUrl = ref(null)
+  const returnUrl = ref()
   const logging = computed(() => {
     return isBlocked('/login')
   })

@@ -36,16 +36,16 @@ const router = createRouter({
       component: () => import('@/views/AboutView.vue')
     },
     {
-      path: '/feedback',
-      name: 'feedback',
-      component: () => import('@/views/FeedbackView.vue')
+      path: '/products',
+      name: 'products',
+      component: () => import('@/views/ProductsView.vue')
     }
   ]
 })
 
 router.beforeEach(async (to) => {
   // redirect to login page if not logged in and trying to access a restricted page
-  const publicPages = ['/login', '/register', '/registered', '/feedback']
+  const publicPages = ['/login', '/register', '/registered']
   const authRequired = !publicPages.includes(to.path)
   const authStore = useAuthStore()
 
