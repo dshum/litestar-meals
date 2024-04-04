@@ -3,6 +3,7 @@ import './axios'
 
 import { createApp, markRaw } from 'vue'
 import { createPinia } from 'pinia'
+import PrimeVue from 'primevue/config'
 
 import App from './App.vue'
 import router from './router'
@@ -15,5 +16,6 @@ pinia.use(({ store }) => {
 const app = createApp(App)
 app.use(pinia)
 app.use(router)
+app.use(PrimeVue)
 
 app.mount('#app')

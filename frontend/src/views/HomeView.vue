@@ -7,10 +7,10 @@
     </div>
 
     <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-      <div class="w-full col-span-2">
+      <div class="w-full lg:col-span-2">
         <RecentMeals />
       </div>
-      <div class="w-full col-span-1">
+      <div class="w-full lg:col-span-1 order-first lg:order-last">
         <AddMeal />
       </div>
     </div>
