@@ -497,7 +497,7 @@ files = [
 
 [[package]]
 name = "litestar"
-version = "2.7.0"
+version = "2.8.0"
 requires_python = "<4.0,>=3.8"
 summary = "Litestar - A production-ready, highly performant, extensible ASGI API Framework"
 groups = ["default"]
@@ -514,14 +514,14 @@ dependencies = [
     "typing-extensions",
 ]
 files = [
-    {file = "litestar-2.7.0-py3-none-any.whl", hash = "sha256:62eabe89c08a1a5b66063bf9d8ec7677368bf7d3593c0579fb3605dd61b486a3"},
-    {file = "litestar-2.7.0.tar.gz", hash = "sha256:30f703b513d8c8a7f82e3b5cd583b071147f7e60b929650eeeeb00ff0ff65582"},
+    {file = "litestar-2.8.0-py3-none-any.whl", hash = "sha256:1b9a326953639a72c48c8720c8d7f2a1724087d037b484214b0c79bd75d36ea7"},
+    {file = "litestar-2.8.0.tar.gz", hash = "sha256:d7f7fa5b0303e50868edaf0b640f67b0f59f1ed088da1730da14ae14ef10e2fb"},
 ]
 
 [[package]]
 name = "litestar-users"
-version = "1.2.2"
-requires_python = ">=3.8,<4.0"
+version = "1.2.3"
+requires_python = "<4.0,>=3.8"
 summary = "Authentication and user management for Litestar"
 groups = ["default"]
 dependencies = [
@@ -533,44 +533,44 @@ dependencies = [
     "pyyaml!=5.4.*",
 ]
 files = [
-    {file = "litestar_users-1.2.2-py3-none-any.whl", hash = "sha256:4212826c8c0516ea6c24bdce138acb90a90a8eb236443581a645d8a562fab22f"},
-    {file = "litestar_users-1.2.2.tar.gz", hash = "sha256:3dff2bf07cc9e771d39faab50c289270a5e6c14f2986049cb0e0b7ebb99d01a7"},
+    {file = "litestar_users-1.2.3-py3-none-any.whl", hash = "sha256:c13b61f2ba7d57e1b2955b34e72accb4dfd190f62ba32cfd49ef88fd51719612"},
+    {file = "litestar_users-1.2.3.tar.gz", hash = "sha256:b4d7bd067f7ff39c5e6ab779f6d2b52930724acfec60a4eaf1cecb32b00b376a"},
 ]
 
 [[package]]
 name = "litestar"
-version = "2.7.0"
+version = "2.8.0"
 extras = ["cli", "jwt", "sqlalchemy"]
 requires_python = "<4.0,>=3.8"
 summary = "Litestar - A production-ready, highly performant, extensible ASGI API Framework"
 groups = ["default"]
 dependencies = [
-    "advanced-alchemy<1.0.0,>=0.2.2",
+    "advanced-alchemy<0.9.0,>=0.2.2",
     "cryptography",
     "jsbeautifier",
-    "litestar==2.7.0",
+    "litestar==2.8.0",
     "python-jose",
     "uvicorn[standard]",
     "uvloop>=0.18.0; sys_platform != \"win32\"",
 ]
 files = [
-    {file = "litestar-2.7.0-py3-none-any.whl", hash = "sha256:62eabe89c08a1a5b66063bf9d8ec7677368bf7d3593c0579fb3605dd61b486a3"},
-    {file = "litestar-2.7.0.tar.gz", hash = "sha256:30f703b513d8c8a7f82e3b5cd583b071147f7e60b929650eeeeb00ff0ff65582"},
+    {file = "litestar-2.8.0-py3-none-any.whl", hash = "sha256:1b9a326953639a72c48c8720c8d7f2a1724087d037b484214b0c79bd75d36ea7"},
+    {file = "litestar-2.8.0.tar.gz", hash = "sha256:d7f7fa5b0303e50868edaf0b640f67b0f59f1ed088da1730da14ae14ef10e2fb"},
 ]
 
 [[package]]
 name = "litestar"
-version = "2.7.0"
+version = "2.8.0"
 extras = ["cryptography", "jwt", "picologging", "pydantic", "redis", "sqlalchemy"]
 requires_python = "<4.0,>=3.8"
 summary = "Litestar - A production-ready, highly performant, extensible ASGI API Framework"
 groups = ["default"]
 dependencies = [
-    "advanced-alchemy<1.0.0,>=0.2.2",
+    "advanced-alchemy<0.9.0,>=0.2.2",
     "cryptography",
     "cryptography",
     "email-validator",
-    "litestar==2.7.0",
+    "litestar==2.8.0",
     "picologging",
     "pydantic",
     "pydantic-extra-types",
@@ -578,8 +578,8 @@ dependencies = [
     "redis[hiredis]>=4.4.4",
 ]
 files = [
-    {file = "litestar-2.7.0-py3-none-any.whl", hash = "sha256:62eabe89c08a1a5b66063bf9d8ec7677368bf7d3593c0579fb3605dd61b486a3"},
-    {file = "litestar-2.7.0.tar.gz", hash = "sha256:30f703b513d8c8a7f82e3b5cd583b071147f7e60b929650eeeeb00ff0ff65582"},
+    {file = "litestar-2.8.0-py3-none-any.whl", hash = "sha256:1b9a326953639a72c48c8720c8d7f2a1724087d037b484214b0c79bd75d36ea7"},
+    {file = "litestar-2.8.0.tar.gz", hash = "sha256:d7f7fa5b0303e50868edaf0b640f67b0f59f1ed088da1730da14ae14ef10e2fb"},
 ]
 
 [[package]]
@@ -996,7 +996,7 @@ files = [
 
 [[package]]
 name = "sentry-sdk"
-version = "1.43.0"
+version = "1.44.1"
 summary = "Python client for Sentry (https://sentry.io)"
 groups = ["default"]
 dependencies = [
@@ -1004,8 +1004,8 @@ dependencies = [
     "urllib3>=1.26.11; python_version >= \"3.6\"",
 ]
 files = [
-    {file = "sentry-sdk-1.43.0.tar.gz", hash = "sha256:41df73af89d22921d8733714fb0fc5586c3461907e06688e6537d01a27e0e0f6"},
-    {file = "sentry_sdk-1.43.0-py2.py3-none-any.whl", hash = "sha256:8d768724839ca18d7b4c7463ef7528c40b7aa2bfbf7fe554d5f9a7c044acfd36"},
+    {file = "sentry-sdk-1.44.1.tar.gz", hash = "sha256:24e6a53eeabffd2f95d952aa35ca52f0f4201d17f820ac9d3ff7244c665aaf68"},
+    {file = "sentry_sdk-1.44.1-py2.py3-none-any.whl", hash = "sha256:5f75eb91d8ab6037c754a87b8501cc581b2827e923682f593bed3539ce5b3999"},
 ]
 
 [[package]]

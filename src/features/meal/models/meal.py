@@ -1,4 +1,4 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
 from advanced_alchemy.base import UUIDAuditBase
@@ -15,10 +15,10 @@ class Meal(UUIDAuditBase):
 
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), primary_key=True)
     product_id: Mapped[UUID] = mapped_column(ForeignKey("products.id"), primary_key=True)
-    weight: Mapped[int]
+    weight: Mapped[Optional[int]]
     user: Mapped["User"] = relationship(
         back_populates="meals",
-        lazy="selectin",
+        lazy="noload",
     )
     product: Mapped["Product"] = relationship(
         back_populates="meals",

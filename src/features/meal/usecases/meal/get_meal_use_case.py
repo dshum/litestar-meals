@@ -1,0 +1,16 @@
+from uuid import UUID
+
+from sqlalchemy import select
+
+from features.meal.models.meal import Meal
+from features.meal.services.meal_service import MealService
+from features.user.models.user import User
+
+
+class GetMealUseCase:
+    def __init__(self, meal_service: MealService):
+        self.meal_service: MealService = meal_service
+
+    async def __call__(self, id: UUID, user: User) -> Meal:
+        statement = select(Meal).where(Meal.user_id == user.id)
+        return await self.meal_service.get(id, statement=statement)

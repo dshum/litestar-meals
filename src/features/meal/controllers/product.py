@@ -6,7 +6,7 @@ from litestar.pagination import OffsetPagination
 from litestar.params import Parameter
 
 from core.dependencies import provide_limit_offset_pagination, provide_order_by
-from features.meal.dependencies import (
+from features.meal.dependencies.product import (
     provide_get_products_use_case,
     provide_create_product_use_case,
     provide_get_product_use_case,
@@ -18,11 +18,11 @@ from features.meal.dependencies import (
 )
 from features.meal.models.product import Product
 from features.meal.schemas.product import ProductReadDTO, ProductCreateSchema, ProductPatchDTO
-from features.meal.usecases.create_product_use_case import CreateProductUseCase
-from features.meal.usecases.delete_product_use_case import DeleteProductUseCase
-from features.meal.usecases.get_product_use_case import GetProductUseCase
-from features.meal.usecases.get_products_use_case import GetProductsUseCase
-from features.meal.usecases.update_product_use_case import UpdateProductUseCase
+from features.meal.usecases.product.create_product_use_case import CreateProductUseCase
+from features.meal.usecases.product.delete_product_use_case import DeleteProductUseCase
+from features.meal.usecases.product.get_product_use_case import GetProductUseCase
+from features.meal.usecases.product.get_products_use_case import GetProductsUseCase
+from features.meal.usecases.product.update_product_use_case import UpdateProductUseCase
 
 
 class ProductController(Controller):
@@ -41,7 +41,7 @@ class ProductController(Controller):
     }
     return_dto = ProductReadDTO
 
-    @post(path="/", dto=None)
+    @post(path="/")
     async def create_product(
             self,
             request: Request,

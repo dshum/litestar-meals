@@ -26,5 +26,4 @@ app = Litestar(
         ConflictError: default_exception_handler,
     },
     debug=settings.app.DEBUG,
-    experimental_features=[ExperimentalFeatures.DTO_CODEGEN],
 )

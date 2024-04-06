@@ -1,8 +1,9 @@
 from decimal import Decimal
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
 from advanced_alchemy.base import UUIDAuditBase
+from litestar.dto import dto_field
 from sqlalchemy import String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
@@ -21,19 +22,19 @@ class Product(UUIDAuditBase):
     weight: Mapped[int | None] = mapped_column(nullable=True)
     calories: Mapped[Decimal]
     user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), index=True)
-    brand_id: Mapped[UUID | None] = mapped_column(ForeignKey("brands.id"), index=True)
-    store_id: Mapped[UUID | None] = mapped_column(ForeignKey("stores.id"), index=True)
+    brand_id: Mapped[UUID | None] = mapped_column(ForeignKey("brands.id"), default=None, index=True)
+    store_id: Mapped[UUID | None] = mapped_column(ForeignKey("stores.id"), default=None, index=True)
     user: Mapped["User"] = relationship(
         foreign_keys=[user_id],
         back_populates="products",
         lazy="noload",
     )
-    brand: Mapped[Brand] = relationship(
+    brand: Mapped[Optional[Brand]] = relationship(
         foreign_keys=[brand_id],
         back_populates="products",
         lazy="selectin",
     )
-    store: Mapped[Store] = relationship(
+    store: Mapped[Optional[Store]] = relationship(
         foreign_keys=[store_id],
         back_populates="products",
         lazy="selectin",
@@ -44,3 +45,6 @@ class Product(UUIDAuditBase):
     )
 
     __table_args__ = (UniqueConstraint("name", "user_id"),)
+
+    def __repr__(self):
+        return f"Product {self.id} {self.name}"

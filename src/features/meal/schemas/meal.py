@@ -1,21 +1,33 @@
+from typing import Optional
+from uuid import UUID
+
 from advanced_alchemy.extensions.litestar import SQLAlchemyDTO
+from litestar.contrib.pydantic import PydanticDTO
 from litestar.dto import DTOConfig
 
+from core.schemas.base_model import AppBaseModel
 from features.meal.models.meal import Meal
 
 
+class MealCreateSchema(AppBaseModel):
+    weight: Optional[int]
+    product_id: UUID
+
+
+class MealCreateDTO(PydanticDTO[MealCreateSchema]):
+    pass
+
+
+class MealPatchDTO(PydanticDTO[MealCreateSchema]):
+    config = DTOConfig(partial=True)
+
+
 class MealReadDTO(SQLAlchemyDTO[Meal]):
-    config = DTOConfig(include={
-        "id", "weight", "created_at",
-        "user.id", "user.email", "user.first_name", "user.last_name",
-        "product.id", "product.name", "product.weight",
-        "product.brand.name", "product.store.name",
-    }, max_nested_depth=2)
-
-
-class MealCreateDTO(SQLAlchemyDTO[Meal]):
-    config = DTOConfig(include={"product_name", "weight"})
-
-
-class MealPatchDTO(SQLAlchemyDTO[Meal]):
-    config = DTOConfig(include={"product_name", "weight"}, partial=True)
+    config = DTOConfig(
+        include={
+            "id", "weight", "created_at",
+            "product.name", "product.weight", "product.calories",
+            "product.brand.0.name", "product.store.0.name",
+        },
+        max_nested_depth=2,
+    )
