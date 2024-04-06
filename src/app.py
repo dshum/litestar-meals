@@ -5,19 +5,21 @@ from litestar.exceptions import HTTPException
 from litestar.repository import ConflictError
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
 
-from config import settings, sentry
+from config import settings
 from config.cors import cors_config
-from config.users import litestar_users
-from core.database import sqlalchemy
+
+from core.database import alchemy
+from core.errors import sentry
 from core.errors.handlers import default_exception_handler
+from server.plugins import litestar_users_plugin, sqlalchemy_plugin
 
 from server.routes import router
 
 app = Litestar(
     route_handlers=[router],
     cors_config=cors_config,
-    plugins=[SQLAlchemyPlugin(sqlalchemy.db_config), litestar_users],
-    on_startup=[sentry.on_startup, sqlalchemy.on_startup],
+    plugins=[sqlalchemy_plugin, litestar_users_plugin],
+    on_startup=[sentry.on_startup, alchemy.on_startup],
     exception_handlers={
         HTTP_500_INTERNAL_SERVER_ERROR: default_exception_handler,
         HTTPException: default_exception_handler,

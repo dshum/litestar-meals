@@ -1,5 +1,6 @@
-from lib.jwt import auth
 from litestar import Controller, post, Request
+
+from features.user.guards.auth import auth
 
 
 class UserController(Controller):

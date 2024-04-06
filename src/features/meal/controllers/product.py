@@ -2,6 +2,7 @@ from uuid import UUID
 
 from litestar import Controller, get, post, put, delete, Request
 from litestar.di import Provide
+from litestar.pagination import OffsetPagination
 from litestar.params import Parameter
 
 from core.dependencies import provide_limit_offset_pagination, provide_order_by
@@ -41,7 +42,7 @@ class ProductController(Controller):
     return_dto = ProductReadDTO
 
     @post(path="/", dto=None)
-    async def create_meal(
+    async def create_product(
             self,
             request: Request,
             create_product_use_case: CreateProductUseCase,
@@ -54,11 +55,11 @@ class ProductController(Controller):
             self,
             request: Request,
             get_products_use_case: GetProductsUseCase,
-    ):
+    ) -> OffsetPagination[Product]:
         return await get_products_use_case(user=request.user)
 
     @get(path="/{id:uuid}")
-    async def get_meal(
+    async def get_product(
             self,
             request: Request,
             get_product_use_case: GetProductUseCase,
@@ -70,7 +71,7 @@ class ProductController(Controller):
         return await get_product_use_case(id, user=request.user)
 
     @put(path="/{id:uuid}", dto=ProductPatchDTO)
-    async def update_meal(
+    async def update_product(
             self,
             request: Request,
             update_product_use_case: UpdateProductUseCase,
