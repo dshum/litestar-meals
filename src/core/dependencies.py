@@ -1,0 +1,18 @@
+from typing import Literal
+
+from advanced_alchemy.filters import LimitOffset, OrderBy
+from litestar.params import Parameter
+
+
+async def provide_limit_offset_pagination(
+        offset: int = Parameter(query="offset", ge=0, default=0, required=False),
+        limit: int = Parameter(query="limit", ge=1, default=10, required=False),
+) -> LimitOffset:
+    return LimitOffset(limit, offset)
+
+
+async def provide_order_by(
+        sort_by: str = Parameter(default="created_at", required=False),
+        sort_order: Literal["asc", "desc"] = Parameter(default="desc", required=False),
+) -> OrderBy:
+    return OrderBy(field_name=sort_by, sort_order=sort_order)
