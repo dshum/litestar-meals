@@ -1,6 +1,7 @@
 from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
+from advanced_alchemy import SQLAlchemyAsyncRepository, SQLAlchemyAsyncRepositoryService
 from advanced_alchemy.base import UUIDAuditBase
 from sqlalchemy import ForeignKey
 from sqlalchemy.orm import Mapped, mapped_column, relationship
@@ -24,3 +25,11 @@ class Meal(UUIDAuditBase):
         back_populates="meals",
         lazy="selectin",
     )
+
+
+class MealRepository(SQLAlchemyAsyncRepository[Meal]):
+    model_type = Meal
+
+
+class MealService(SQLAlchemyAsyncRepositoryService[Meal]):
+    repository_type = MealRepository

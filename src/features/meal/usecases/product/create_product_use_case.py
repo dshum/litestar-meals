@@ -1,8 +1,8 @@
-from features.meal.models.product import Product
+from features.meal.models.brand import BrandService
+from features.meal.models.product import Product, ProductService
+from features.meal.models.store import StoreService
 from features.meal.schemas.product import ProductCreateSchema
-from features.meal.services.brand_service import BrandService
-from features.meal.services.product_service import ProductService
-from features.meal.services.store_service import StoreService
+
 from features.user.models.user import User
 
 

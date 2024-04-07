@@ -2,6 +2,7 @@ from decimal import Decimal
 from typing import TYPE_CHECKING, Optional
 from uuid import UUID
 
+from advanced_alchemy import SQLAlchemyAsyncRepository, SQLAlchemyAsyncRepositoryService
 from advanced_alchemy.base import UUIDAuditBase
 from litestar.dto import dto_field
 from sqlalchemy import String, ForeignKey, UniqueConstraint
@@ -46,5 +47,10 @@ class Product(UUIDAuditBase):
 
     __table_args__ = (UniqueConstraint("name", "user_id"),)
 
-    def __repr__(self):
-        return f"Product {self.id} {self.name}"
+
+class ProductRepository(SQLAlchemyAsyncRepository[Product]):
+    model_type = Product
+
+
+class ProductService(SQLAlchemyAsyncRepositoryService[Product]):
+    repository_type = ProductRepository

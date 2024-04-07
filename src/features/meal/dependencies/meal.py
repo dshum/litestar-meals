@@ -4,9 +4,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
 from features.meal.models.meal import Meal
+from features.meal.models.meal import MealService
 from features.meal.models.product import Product
-from features.meal.services.meal_service import MealService
-from features.meal.services.product_service import ProductService
+from features.meal.models.product import ProductService
 from features.meal.usecases.meal.create_meal_use_case import CreateMealUseCase
 from features.meal.usecases.meal.delete_meal_use_case import DeleteMealUseCase
 from features.meal.usecases.meal.get_meal_use_case import GetMealUseCase

@@ -2,8 +2,7 @@ from uuid import UUID
 
 from sqlalchemy import select
 
-from features.meal.models.product import Product
-from features.meal.services.product_service import ProductService
+from features.meal.models.product import Product, ProductService
 from features.user.models.user import User
 
 

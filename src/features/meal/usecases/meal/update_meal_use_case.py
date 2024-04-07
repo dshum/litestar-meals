@@ -3,17 +3,13 @@ from uuid import UUID
 from litestar.exceptions import NotFoundException
 from sqlalchemy import select
 
-from features.meal.models.meal import Meal
+from features.meal.models.meal import Meal, MealService
 from features.meal.schemas.meal import MealCreateSchema
-from features.meal.services.brand_service import BrandService
-from features.meal.services.meal_service import MealService
-from features.meal.services.store_service import StoreService
 from features.user.models.user import User
 
 
 class UpdateMealUseCase:
-    def __init__(self, meal_service: MealService
-                 ):
+    def __init__(self, meal_service: MealService):
         self.meal_service: MealService = meal_service
 
     async def __call__(

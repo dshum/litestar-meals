@@ -1,10 +1,8 @@
 from sqlalchemy import select
 
-from features.meal.models.meal import Meal
-from features.meal.models.product import Product
+from features.meal.models.meal import Meal, MealService
+from features.meal.models.product import Product, ProductService
 from features.meal.schemas.meal import MealCreateSchema
-from features.meal.services.meal_service import MealService
-from features.meal.services.product_service import ProductService
 from features.user.models.user import User
 
 
