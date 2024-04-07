@@ -11,6 +11,13 @@ async def provide_limit_offset_pagination(
     return LimitOffset(limit, offset)
 
 
+async def provide_classic_pagination(
+        page: int = Parameter(query="page", ge=1, default=1, required=False),
+        page_size: int = Parameter(query="pageSize", ge=1, le=100, default=10, required=False),
+) -> LimitOffset:
+    return LimitOffset(page_size, page_size * (page - 1))
+
+
 async def provide_order_by(
         sort_by: str = Parameter(default="created_at", required=False),
         sort_order: Literal["asc", "desc"] = Parameter(default="desc", required=False),

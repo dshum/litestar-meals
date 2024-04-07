@@ -5,7 +5,7 @@ from litestar.di import Provide
 from litestar.pagination import OffsetPagination
 from litestar.params import Parameter
 
-from core.dependencies import provide_limit_offset_pagination, provide_order_by
+from core.utils.dependencies import provide_limit_offset_pagination, provide_order_by
 from features.meal.dependencies.meal import (
     provide_get_meals_use_case,
     provide_create_meal_use_case,

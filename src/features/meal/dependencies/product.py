@@ -58,14 +58,6 @@ async def provide_delete_product_use_case(product_service: ProductService) -> De
     return DeleteProductUseCase(product_service=product_service)
 
 
-async def provide_store_service(db_session: AsyncSession) -> StoreService:
-    return StoreService(session=db_session)
-
-
-async def provide_brand_service(db_session: AsyncSession) -> BrandService:
-    return BrandService(session=db_session)
-
-
 async def provide_product_service(db_session: AsyncSession) -> ProductService:
     statement = (
         select(Product)

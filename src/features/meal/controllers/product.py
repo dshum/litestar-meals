@@ -2,10 +2,11 @@ from uuid import UUID
 
 from litestar import Controller, get, post, put, delete, Request
 from litestar.di import Provide
-from litestar.pagination import OffsetPagination
+from litestar.pagination import OffsetPagination, ClassicPagination
 from litestar.params import Parameter
 
-from core.dependencies import provide_limit_offset_pagination, provide_order_by
+from core.utils.dependencies import provide_limit_offset_pagination, provide_order_by, provide_classic_pagination
+from features.meal.dependencies.brand import provide_brand_service
 from features.meal.dependencies.product import (
     provide_get_products_use_case,
     provide_create_product_use_case,
@@ -13,9 +14,8 @@ from features.meal.dependencies.product import (
     provide_update_product_use_case,
     provide_delete_product_use_case,
     provide_product_service,
-    provide_brand_service,
-    provide_store_service,
 )
+from features.meal.dependencies.store import provide_store_service
 from features.meal.models.product import Product
 from features.meal.schemas.product import ProductReadDTO, ProductCreateSchema, ProductPatchDTO
 from features.meal.usecases.product.create_product_use_case import CreateProductUseCase
@@ -36,7 +36,7 @@ class ProductController(Controller):
         "product_service": Provide(provide_product_service),
         "brand_service": Provide(provide_brand_service),
         "store_service": Provide(provide_store_service),
-        "limit_offset": Provide(provide_limit_offset_pagination),
+        "limit_offset": Provide(provide_classic_pagination),
         "order_by": Provide(provide_order_by),
     }
     return_dto = ProductReadDTO
@@ -55,7 +55,7 @@ class ProductController(Controller):
             self,
             request: Request,
             get_products_use_case: GetProductsUseCase,
-    ) -> OffsetPagination[Product]:
+    ) -> ClassicPagination[Product]:
         return await get_products_use_case(user=request.user)
 
     @get(path="/{id:uuid}")
