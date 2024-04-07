@@ -17,14 +17,7 @@ class CreateMealUseCase:
 
     async def __call__(self, data: MealCreateSchema, user: User) -> Meal:
         statement = select(Product).where(Product.user_id == user.id)
-        try:
-            product = await self.product_service.get(data.product_id, statement=statement)
-        except:
-            raise
-
-        meal = await self.meal_service.get_one_or_none(product_id=product.id, user_id=user.id)
-        if meal:
-            return meal
+        product = await self.product_service.get(data.product_id, statement=statement)
 
         meal = Meal(
             weight=data.weight or product.weight,
