@@ -2,9 +2,12 @@ from litestar import Request, Response
 from litestar.exceptions import HTTPException
 from sentry_sdk import capture_exception
 
+from config import settings
+
 
 def default_exception_handler(request: Request, exc: HTTPException) -> Response:
-    capture_exception(exc)
+    if not settings.app.DEBUG:
+        capture_exception(exc)
 
     if hasattr(exc, "detail"):
         detail = exc.detail

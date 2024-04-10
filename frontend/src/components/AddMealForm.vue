@@ -3,11 +3,10 @@ import { ref } from 'vue'
 import { Form } from 'vee-validate'
 import * as yup from 'yup'
 import InputField from '@/components/forms/InputField.vue'
-import AutoComplete from 'primevue/autocomplete'
+import { client } from '@/axios.js'
+import ComboboxField from '@/components/forms/ComboboxField.vue'
 
 const loading = ref(false)
-const selectedBrand = ref()
-
 const schema = yup.object({
   name: yup.string().required('Name is required'),
   weight: yup.number().required('Weight is required')
@@ -16,28 +15,21 @@ const schema = yup.object({
   calories: yup.number().required('Calories content is required')
     .moreThan(0, 'Calories must be greater than 0')
     .max(10000, 'Calories may not be greater than 10000'),
-  brand: yup.string()
+  brand_name: yup.string(),
+  store_name: yup.string()
 })
-
 const error = ref()
 
-const brands = [
-  'Creative Kitchen',
-  'Danissimo',
-  'Miratorg'
-]
-const stores = [
-  'Ozon',
-  'Vkusvill',
-  'Various'
-]
+const onSubmit = async (form) => {
+  error.value = null
 
-async function register(form) {
-  console.log(form)
-}
+  await client.post('/products', form).then(({ data }) => {
 
-async function onSelectBrand() {
-  console.log(selectedBrand.value)
+  }).catch(({ response }) => {
+    if (response.data.detail) {
+      error.value = response.data.detail
+    }
+  })
 }
 </script>
 
@@ -46,40 +38,40 @@ async function onSelectBrand() {
     <li>{{ error }}</li>
   </ul>
 
-  <Form :validation-schema="schema" @submit="register">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-x-4">
-      <div class="form-control md:col-span-2 mb-3">
+  <Form :validation-schema="schema" @submit="onSubmit">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 md:gap-x-4">
+      <div class="form-control md:col-span-2">
         <InputField type="text" name="name" label="Name" placeholder="Meal name" />
       </div>
 
-      <div class="form-control mb-3">
+      <div class="form-control">
         <InputField type="number" name="weight" label="Weight" placeholder="Weight in grams"
                     min="0" max="10000" step="1" />
       </div>
 
-      <div class="form-control mb-3">
+      <div class="form-control">
         <InputField type="number" name="calories" label="Calories" placeholder="Calories per 100 g"
                     min="0" max="10000" step="1" />
       </div>
 
-      <div class="form-control mb-3">
+      <div class="form-control">
         <label class="label">
           <span class="label-text">Brand</span>
         </label>
-        <AutoComplete v-model="selectedBrand" :suggestions="brands" @complete="onSelectBrand"
-                      class="input input-bordered" />
-      </div>
-    </div>
 
-    <div class="form-control max-w-xs mt-3">
-      <button class="btn btn-primary">
-        <span v-if="loading" class="loading loading-ring loading-lg"></span>
-        <span v-else>Save</span>
-      </button>
+        <ComboboxField />
+      </div>
+
+      <div class="form-control">
+        <InputField type="text" name="store_name" label="Store" placeholder="Store name" />
+      </div>
+
+      <div class="form-control col-span-2 mt-2">
+        <button class="btn btn-primary">
+          <span v-if="loading" class="loading loading-ring loading-lg"></span>
+          <span v-else>Save</span>
+        </button>
+      </div>
     </div>
   </Form>
 </template>
-
-<style scoped>
-
-</style>

@@ -9,7 +9,7 @@ from core.models.base import Base
 alchemy_config = SQLAlchemyAsyncConfig(
     connection_string=settings.db.URL,
     metadata=Base.metadata,
-    session_config=AsyncSessionConfig(expire_on_commit=False),
+    session_config=AsyncSessionConfig(expire_on_commit=False, autoflush=False),
     engine_config=EngineConfig(echo=settings.db.ECHO),
     before_send_handler=autocommit_before_send_handler,
 )
