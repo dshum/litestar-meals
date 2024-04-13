@@ -1,19 +1,18 @@
+from advanced_alchemy.filters import LimitOffset, OrderBy
 from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from features.meal.models.brand import BrandService, Brand
-from features.meal.usecases.brand.create_brand_use_case import CreateBrandUseCase
-from features.meal.usecases.brand.get_brands_use_case import GetBrandsUseCase
+from features.meal.usecases.brand_use_case import BrandUseCase
+from features.user.models.user import User
 
 
-async def provide_create_brand_use_case(brand_service: BrandService) -> CreateBrandUseCase:
-    return CreateBrandUseCase(brand_service=brand_service)
-
-
-async def provide_get_brands_use_case(brand_service: BrandService) -> GetBrandsUseCase:
-    return GetBrandsUseCase(brand_service=brand_service)
-
-
-async def provide_brand_service(db_session: AsyncSession) -> BrandService:
-    statement = select(Brand).order_by(Brand.name)
-    return BrandService(session=db_session, statement=statement)
+async def provide_brand_use_case(
+        db_session: AsyncSession,
+        current_user: User,
+) -> BrandUseCase:
+    statement = (select(Brand)
+                 .where(Brand.user_id == current_user.id)
+                 .order_by(Brand.name))
+    brand_service = BrandService(session=db_session, statement=statement)
+    return BrandUseCase(brand_service=brand_service)

@@ -7,8 +7,10 @@ from sqlalchemy import String
 from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
+from features.meal.models.brand import Brand
 from features.meal.models.meal import Meal
 from features.meal.models.product import Product
+from features.meal.models.store import Store
 
 password_manager = PasswordManager()
 
@@ -18,6 +20,16 @@ class User(UUIDAuditBase, SQLAlchemyUserMixin):
 
     first_name: Mapped[str] = mapped_column(String(255))
     last_name: Mapped[str] = mapped_column(String(255))
+    brands: Mapped[List[Brand]] = relationship(
+        foreign_keys="Brand.user_id",
+        back_populates="user",
+        lazy="noload",
+    )
+    stores: Mapped[List[Store]] = relationship(
+        foreign_keys="Store.user_id",
+        back_populates="user",
+        lazy="noload",
+    )
     products: Mapped[List[Product]] = relationship(
         foreign_keys="Product.user_id",
         back_populates="user",

@@ -14,8 +14,8 @@ if TYPE_CHECKING:
 class Meal(UUIDAuditBase):
     __tablename__ = 'meals'
 
-    user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), primary_key=True)
-    product_id: Mapped[UUID] = mapped_column(ForeignKey("products.id"), primary_key=True)
+    user_id: Mapped[UUID] = mapped_column(ForeignKey("users.id"), index=True)
+    product_id: Mapped[UUID] = mapped_column(ForeignKey("products.id"), index=True)
     weight: Mapped[Optional[int]]
     user: Mapped["User"] = relationship(
         back_populates="meals",

@@ -18,6 +18,7 @@ if TYPE_CHECKING:
 
 class Product(UUIDAuditBase):
     __tablename__ = 'products'
+    __table_args__ = (UniqueConstraint("name", "user_id"),)
 
     name: Mapped[str] = mapped_column(String(1000))
     weight: Mapped[int | None] = mapped_column(nullable=True)
@@ -44,8 +45,6 @@ class Product(UUIDAuditBase):
         back_populates="product",
         lazy="selectin",
     )
-
-    __table_args__ = (UniqueConstraint("name", "user_id"),)
 
 
 class ProductRepository(SQLAlchemyAsyncRepository[Product]):

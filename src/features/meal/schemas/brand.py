@@ -1,22 +1,21 @@
-from advanced_alchemy.extensions.litestar import SQLAlchemyDTO
-from litestar.contrib.pydantic import PydanticDTO
-from litestar.dto import DTOConfig
-from pydantic import Field, EmailStr
+from dataclasses import dataclass
+from uuid import UUID
 
-from core.schemas.base_model import AppBaseModel
+from advanced_alchemy.extensions.litestar import SQLAlchemyDTO
+from litestar.dto import DTOConfig, DataclassDTO
+
 from features.meal.models.brand import Brand
 
 
-class BrandCreateSchema(AppBaseModel):
-    name: EmailStr
-    age: int = Field(gt=21)
+@dataclass
+class BrandCreateSchema:
+    name: str
+    user_id: UUID
 
 
-class BrandCreateDTO(PydanticDTO[BrandCreateSchema]):
-    pass
+class BrandCreateDTO(DataclassDTO[BrandCreateSchema]):
+    config = DTOConfig(include={"name"})
 
 
 class BrandReadDTO(SQLAlchemyDTO[Brand]):
-    config = DTOConfig(
-        include={"id", "name"},
-    )
+    config = DTOConfig(include={"id", "name"})

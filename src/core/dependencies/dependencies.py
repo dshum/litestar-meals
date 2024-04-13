@@ -1,7 +1,15 @@
-from typing import Literal
+from typing import Literal, Any
 
 from advanced_alchemy.filters import LimitOffset, OrderBy
+from litestar import Request
 from litestar.params import Parameter
+from litestar.security.jwt import Token
+
+from features.user.models.user import User
+
+
+async def provide_current_user(request: Request[User, Token, Any]) -> User:
+    return request.user
 
 
 async def provide_limit_offset_pagination(

@@ -16,7 +16,7 @@ defineProps({
     <span class="label-text">{{ label }}</span>
   </label>
 
-  <Field as="select" v-slot="{ value }" :name="name" v-bind="$attrs" class="input input-bordered">
+  <Field as="select" v-slot="{ value }" :name="name" v-bind="$attrs" class="select select-bordered">
     <slot />
   </Field>
 

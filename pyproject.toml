@@ -6,7 +6,7 @@ authors = [
     {name = "Denis Shumeev", email = "denis-shumeev@yandex.ru"},
 ]
 dependencies = [
-    "litestar[cryptography,jwt,picologging,pydantic,redis,sqlalchemy]>=2.6.3",
+    "litestar[cryptography,jwt,picologging,pydantic,redis,sqlalchemy]>=2.8.2",
     "pydantic-settings>=2.2.1",
     "asyncpg>=0.29.0",
     "uvicorn>=0.27.1",
