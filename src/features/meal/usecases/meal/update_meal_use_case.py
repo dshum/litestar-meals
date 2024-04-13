@@ -1,6 +1,5 @@
 from uuid import UUID
 
-from litestar.exceptions import NotFoundException
 from sqlalchemy import select
 
 from features.meal.models.meal import Meal, MealService

@@ -1,6 +1,6 @@
 from advanced_alchemy import IntegrityError
 from litestar import Request, Response
-from litestar.exceptions import HTTPException, ValidationException, ClientException
+from litestar.exceptions import HTTPException, ValidationException
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_409_CONFLICT
 from sentry_sdk import capture_exception
 
@@ -27,7 +27,7 @@ def http_exception_handler(request: Request, exc: HTTPException) -> Response:
             status_code = HTTP_409_CONFLICT
         case _:
             status_code = getattr(exc, "status_code", HTTP_500_INTERNAL_SERVER_ERROR)
-        
+
     return Response(
         content={
             "type": str(exc.__class__),

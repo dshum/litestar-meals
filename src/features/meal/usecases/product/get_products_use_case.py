@@ -1,7 +1,7 @@
 from math import ceil, floor
 
 from advanced_alchemy.filters import LimitOffset, OrderBy
-from litestar.pagination import OffsetPagination, ClassicPagination
+from litestar.pagination import ClassicPagination
 from sqlalchemy import select
 
 from features.meal.models.product import Product, ProductService

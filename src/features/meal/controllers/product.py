@@ -1,11 +1,11 @@
 from uuid import UUID
 
+from core.utils.dependencies import provide_order_by, provide_classic_pagination
 from litestar import Controller, get, post, put, delete, Request
 from litestar.di import Provide
-from litestar.pagination import OffsetPagination, ClassicPagination
+from litestar.pagination import ClassicPagination
 from litestar.params import Parameter
 
-from core.utils.dependencies import provide_limit_offset_pagination, provide_order_by, provide_classic_pagination
 from features.meal.dependencies.brand import provide_brand_service
 from features.meal.dependencies.product import (
     provide_get_products_use_case,

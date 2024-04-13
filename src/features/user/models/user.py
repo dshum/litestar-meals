@@ -1,4 +1,4 @@
-from typing import List, TYPE_CHECKING
+from typing import List
 
 from advanced_alchemy.base import UUIDAuditBase
 from litestar_users.adapter.sqlalchemy.mixins import SQLAlchemyUserMixin

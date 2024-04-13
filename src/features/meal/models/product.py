@@ -4,7 +4,6 @@ from uuid import UUID
 
 from advanced_alchemy import SQLAlchemyAsyncRepository, SQLAlchemyAsyncRepositoryService
 from advanced_alchemy.base import UUIDAuditBase
-from litestar.dto import dto_field
 from sqlalchemy import String, ForeignKey, UniqueConstraint
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 

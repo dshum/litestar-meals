@@ -1,4 +1,3 @@
-from advanced_alchemy.extensions.litestar import SQLAlchemyPlugin
 from sqlalchemy.ext.asyncio import async_sessionmaker
 
 from config.alchemy import alchemy_config
