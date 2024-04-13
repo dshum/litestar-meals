@@ -1,10 +1,11 @@
 <script setup>
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import { Form } from 'vee-validate'
 import * as yup from 'yup'
 import InputField from '@/components/forms/InputField.vue'
 import { client } from '@/axios.js'
 import ComboboxField from '@/components/forms/ComboboxField.vue'
+import SelectField from '@/components/forms/SelectField.vue'
 
 const loading = ref(false)
 const schema = yup.object({
@@ -20,6 +21,21 @@ const schema = yup.object({
 })
 const error = ref()
 
+const brands = ref([])
+const stores = ref([])
+
+const getBrands = async () => {
+  await client.get('/brands').then(({ data }) => {
+    brands.value = data
+  })
+}
+
+const getStores = async () => {
+  await client.get('/stores').then(({ data }) => {
+    stores.value = data
+  })
+}
+
 const onSubmit = async (form) => {
   error.value = null
 
@@ -31,6 +47,11 @@ const onSubmit = async (form) => {
     }
   })
 }
+
+onMounted(() => {
+  getBrands()
+  getStores()
+})
 </script>
 
 <template>
@@ -39,8 +60,8 @@ const onSubmit = async (form) => {
   </ul>
 
   <Form :validation-schema="schema" @submit="onSubmit">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-y-4 md:gap-x-4">
-      <div class="form-control md:col-span-2">
+    <div class="grid grid-cols-1 gap-y-4 md:gap-x-4">
+      <div class="form-control">
         <InputField type="text" name="name" label="Name" placeholder="Meal name" />
       </div>
 
@@ -55,18 +76,20 @@ const onSubmit = async (form) => {
       </div>
 
       <div class="form-control">
-        <label class="label">
-          <span class="label-text">Brand</span>
-        </label>
-
-        <ComboboxField />
+        <SelectField name="brand" label="Brand">
+          <option value="">Select brand</option>
+          <option v-for="brand in brands" :value="brand.id">{{ brand.name }}</option>
+        </SelectField>
       </div>
 
       <div class="form-control">
-        <InputField type="text" name="store_name" label="Store" placeholder="Store name" />
+        <SelectField name="store" label="Store" placeholder="Select store">
+          <option value="">Select store</option>
+          <option v-for="store in stores" :value="store.id">{{ store.name }}</option>
+        </SelectField>
       </div>
 
-      <div class="form-control col-span-2 mt-2">
+      <div class="form-control mt-2">
         <button class="btn btn-primary">
           <span v-if="loading" class="loading loading-ring loading-lg"></span>
           <span v-else>Save</span>

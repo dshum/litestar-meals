@@ -17,15 +17,19 @@ import AddMealForm from '@/components/AddMealForm.vue'
           <li>Products</li>
         </ul>
       </div>
-
-      <ModalDialog>
-        <AddMealForm />
-      </ModalDialog>
     </div>
 
-    <div class="card shadow-2xl shadow-slate-200 bg-base-100">
-      <div class="card-body">
-        <ProductsTable />
+    <div class="grid grid-cols-1 lg:grid-cols-3 xl:grid-cols-4 gap-y-4 md:gap-x-4">
+      <div class="lg:col-span-2 xl:col-span-3 card shadow-2xl shadow-slate-200 bg-base-100">
+        <div class="card-body">
+          <ProductsTable />
+        </div>
+      </div>
+
+      <div class="card shadow-2xl shadow-slate-200 bg-base-100">
+        <div class="card-body">
+          <AddMealForm />
+        </div>
       </div>
     </div>
   </UserLayout>

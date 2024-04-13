@@ -31,11 +31,9 @@ export const useUserStore = defineStore('user', () => {
     }).catch(handleErrors)
   }
 
-
   async function handleErrors(error) {
-    if (error instanceof CanceledError) {
-
-    } else if (error.response.data.detail) {
+    if (!error instanceof CanceledError
+      && error.response.data.detail) {
       error.value = error.response.data.detail
     }
   }

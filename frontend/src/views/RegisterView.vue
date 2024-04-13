@@ -23,8 +23,8 @@ const schema = yup.object({
 <template>
   <GuestLayout>
     <div class="hero w-full">
-      <div class="hero-content w-full flex-col lg:flex-row-reverse gap-x-[4vw]">
-        <div class="flex-initial w-full text-center lg:text-left">
+      <div class="hero-content w-full flex flex-col lg:flex-row-reverse justify-center gap-x-[4vw]">
+        <div class="text-center lg:text-left">
           <h1 class="mb-6 text-5xl font-bold">Join now!</h1>
           <p class="py-2">Register to get an access to your food diary.</p>
           <p class="py-2">Already have an account?
@@ -32,38 +32,40 @@ const schema = yup.object({
           </p>
         </div>
 
-        <div class="flex-initial w-full card shadow-2xl shadow-sky-200 bg-base-100">
+        <div class="shrink-0 w-full max-w-sm card shadow-2xl shadow-sky-200 bg-base-100">
           <div class="card-body">
             <ul v-if="userStore.error" class="text-error">
               <li>{{ userStore.error }}</li>
             </ul>
 
             <Form :validation-schema="schema" @submit="userStore.register">
-              <div class="form-control">
-                <InputField type="email" name="email" label="Email" />
-              </div>
+              <div class="grid grid-cols-1 gap-y-4">
+                <div class="form-control">
+                  <InputField type="email" name="email" label="Email" />
+                </div>
 
-              <div class="form-control">
-                <InputField type="password" name="password" label="Password" />
-              </div>
+                <div class="form-control">
+                  <InputField type="password" name="password" label="Password" />
+                </div>
 
-              <div class="form-control">
-                <InputField type="password" name="password_confirmation" label="Password confirmation" />
-              </div>
+                <div class="form-control">
+                  <InputField type="password" name="password_confirmation" label="Password confirmation" />
+                </div>
 
-              <div class="form-control">
-                <InputField type="text" name="first_name" label="First name" />
-              </div>
+                <div class="form-control">
+                  <InputField type="text" name="first_name" label="First name" />
+                </div>
 
-              <div class="form-control">
-                <InputField type="text" name="last_name" label="Last name" />
-              </div>
+                <div class="form-control">
+                  <InputField type="text" name="last_name" label="Last name" />
+                </div>
 
-              <div class="form-control mt-4">
-                <button class="btn btn-primary max-w-xs">
-                  <span v-if="userStore.registering" class="loading loading-ring loading-lg"></span>
-                  <span v-else>Register</span>
-                </button>
+                <div class="form-control mt-4">
+                  <button class="btn btn-primary max-w-xs">
+                    <span v-if="userStore.registering" class="loading loading-ring loading-lg"></span>
+                    <span v-else>Register</span>
+                  </button>
+                </div>
               </div>
             </Form>
           </div>

@@ -1,5 +1,5 @@
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, reactive } from 'vue'
 import {
   Combobox,
   ComboboxInput,
@@ -9,24 +9,23 @@ import {
   TransitionRoot
 } from '@headlessui/vue'
 import { CheckIcon, ChevronUpDownIcon } from '@heroicons/vue/20/solid'
+import { Field } from 'vee-validate'
 
-const people = [
-  { id: 1, name: 'Wade Cooper' },
-  { id: 2, name: 'Arlene Mccoy' },
-  { id: 3, name: 'Devon Webb' },
-  { id: 4, name: 'Tom Cook' },
-  { id: 5, name: 'Tanya Fox' },
-  { id: 6, name: 'Hellen Schmidt' }
-]
+defineOptions({
+  inheritAttrs: false
+})
 
-let selected = ref(people[0])
-let query = ref('')
-
-let filteredPeople = computed(() =>
+const props = defineProps({
+  name: String,
+  suggestions: Array
+})
+const selected = ref(props.suggestions[0])
+const query = ref('')
+const filteredSuggestions = computed(() =>
   query.value === ''
-    ? people
-    : people.filter((person) =>
-      person.name
+    ? props.suggestions
+    : props.suggestions.filter((suggestion) =>
+      suggestion.label
         .toLowerCase()
         .replace(/\s+/g, '')
         .includes(query.value.toLowerCase().replace(/\s+/g, ''))
@@ -36,15 +35,21 @@ let filteredPeople = computed(() =>
 
 <template>
   <Combobox v-model="selected">
-    <div class="relative mt-1">
+    <div class="relative">
       <div
-        class="w-full cursor-default overflow-hidden rounded-lg bg-white text-left shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/75 focus-visible:ring-offset-2 focus-visible:ring-offset-teal-300 sm:text-sm"
+        class="flex flex-row items-center input input-bordered"
       >
         <ComboboxInput
-          class="w-full border-none py-2 pl-3 pr-10 text-sm leading-5 text-gray-900 focus:ring-0"
-          :displayValue="(person) => person.name"
-          @change="query = $event.target.value"
-        />
+          class="w-full"
+          :displayValue="(suggestion) => suggestion.label"
+        >
+          <Field
+            :name="name"
+            v-bind="$attrs"
+            class="w-full pr-4 bg-red-100"
+            @change="query = $event.target.value"
+          />
+        </ComboboxInput>
         <ComboboxButton
           class="absolute inset-y-0 right-0 flex items-center pr-2"
         >
@@ -61,44 +66,40 @@ let filteredPeople = computed(() =>
         @after-leave="query = ''"
       >
         <ComboboxOptions
-          class="absolute mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black/5 focus:outline-none sm:text-sm"
+          v-if="filteredSuggestions.length > 0"
+          class="absolute z-[1] mt-1 max-h-60 w-full overflow-auto rounded-xl bg-white py-1 text-base shadow-xl"
         >
-          <div
-            v-if="filteredPeople.length === 0 && query !== ''"
-            class="relative cursor-default select-none px-4 py-2 text-gray-700"
-          >
-            Nothing found.
-          </div>
-
-          <ComboboxOption
-            v-for="person in filteredPeople"
-            as="template"
-            :key="person.id"
-            :value="person"
-            v-slot="{ selected, active }"
-          >
+          <ul class="menu">
             <li
-              class="relative cursor-default select-none py-2 pl-10 pr-4"
-              :class="{
-                  'bg-teal-600 text-white': active,
-                  'text-gray-900': !active,
-                }"
+              v-if="filteredSuggestions.length === 0 && query !== ''"
+              class="menu-title"
             >
+              Nothing found.
+            </li>
+
+            <ComboboxOption
+              v-for="suggestion in filteredSuggestions"
+              as="template"
+              :key="suggestion.value"
+              :value="suggestion"
+              v-slot="{ selected, active }"
+            >
+              <li
+                class=""
+                :class="{
+                  'bg-gray-200 rounded-lg': active,
+                  '': !active,
+                }"
+              >
                 <span
                   class="block truncate"
                   :class="{ 'font-medium': selected, 'font-normal': !selected }"
                 >
-                  {{ person.name }}
+                  {{ suggestion.label }}
                 </span>
-              <span
-                v-if="selected"
-                class="absolute inset-y-0 left-0 flex items-center pl-3"
-                :class="{ 'text-white': active, 'text-teal-600': !active }"
-              >
-                  <CheckIcon class="h-5 w-5" aria-hidden="true" />
-                </span>
-            </li>
-          </ComboboxOption>
+              </li>
+            </ComboboxOption>
+          </ul>
         </ComboboxOptions>
       </TransitionRoot>
     </div>

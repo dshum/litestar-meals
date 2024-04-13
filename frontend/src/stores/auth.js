@@ -49,9 +49,9 @@ export const useAuthStore = defineStore('auth', () => {
     })
   }
 
-  async function handleErrors(error) {
-    if (error.response.data.detail) {
-      error.value = error.response.data.detail
+  async function handleErrors({ response: { status, data } }) {
+    if (data.detail) {
+      error.value = data.detail
     }
   }
 

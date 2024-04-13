@@ -497,7 +497,7 @@ files = [
 
 [[package]]
 name = "litestar"
-version = "2.8.0"
+version = "2.8.2"
 requires_python = "<4.0,>=3.8"
 summary = "Litestar - A production-ready, highly performant, extensible ASGI API Framework"
 groups = ["default"]
@@ -514,8 +514,8 @@ dependencies = [
     "typing-extensions",
 ]
 files = [
-    {file = "litestar-2.8.0-py3-none-any.whl", hash = "sha256:1b9a326953639a72c48c8720c8d7f2a1724087d037b484214b0c79bd75d36ea7"},
-    {file = "litestar-2.8.0.tar.gz", hash = "sha256:d7f7fa5b0303e50868edaf0b640f67b0f59f1ed088da1730da14ae14ef10e2fb"},
+    {file = "litestar-2.8.2-py3-none-any.whl", hash = "sha256:c891baf8a17d66cfed5c40bef7b5bf4c02c2831babf5fca0af404f441610557a"},
+    {file = "litestar-2.8.2.tar.gz", hash = "sha256:18353cb7246ba2e7f8d4aac4fe2d8772b503c931cf5ee16efc759cbbc3a2344b"},
 ]
 
 [[package]]
@@ -539,7 +539,7 @@ files = [
 
 [[package]]
 name = "litestar"
-version = "2.8.0"
+version = "2.8.2"
 extras = ["cli", "jwt", "sqlalchemy"]
 requires_python = "<4.0,>=3.8"
 summary = "Litestar - A production-ready, highly performant, extensible ASGI API Framework"
@@ -548,19 +548,19 @@ dependencies = [
     "advanced-alchemy<0.9.0,>=0.2.2",
     "cryptography",
     "jsbeautifier",
-    "litestar==2.8.0",
+    "litestar==2.8.2",
     "python-jose",
     "uvicorn[standard]",
     "uvloop>=0.18.0; sys_platform != \"win32\"",
 ]
 files = [
-    {file = "litestar-2.8.0-py3-none-any.whl", hash = "sha256:1b9a326953639a72c48c8720c8d7f2a1724087d037b484214b0c79bd75d36ea7"},
-    {file = "litestar-2.8.0.tar.gz", hash = "sha256:d7f7fa5b0303e50868edaf0b640f67b0f59f1ed088da1730da14ae14ef10e2fb"},
+    {file = "litestar-2.8.2-py3-none-any.whl", hash = "sha256:c891baf8a17d66cfed5c40bef7b5bf4c02c2831babf5fca0af404f441610557a"},
+    {file = "litestar-2.8.2.tar.gz", hash = "sha256:18353cb7246ba2e7f8d4aac4fe2d8772b503c931cf5ee16efc759cbbc3a2344b"},
 ]
 
 [[package]]
 name = "litestar"
-version = "2.8.0"
+version = "2.8.2"
 extras = ["cryptography", "jwt", "picologging", "pydantic", "redis", "sqlalchemy"]
 requires_python = "<4.0,>=3.8"
 summary = "Litestar - A production-ready, highly performant, extensible ASGI API Framework"
@@ -570,7 +570,7 @@ dependencies = [
     "cryptography",
     "cryptography",
     "email-validator",
-    "litestar==2.8.0",
+    "litestar==2.8.2",
     "picologging",
     "pydantic",
     "pydantic-extra-types",
@@ -578,8 +578,8 @@ dependencies = [
     "redis[hiredis]>=4.4.4",
 ]
 files = [
-    {file = "litestar-2.8.0-py3-none-any.whl", hash = "sha256:1b9a326953639a72c48c8720c8d7f2a1724087d037b484214b0c79bd75d36ea7"},
-    {file = "litestar-2.8.0.tar.gz", hash = "sha256:d7f7fa5b0303e50868edaf0b640f67b0f59f1ed088da1730da14ae14ef10e2fb"},
+    {file = "litestar-2.8.2-py3-none-any.whl", hash = "sha256:c891baf8a17d66cfed5c40bef7b5bf4c02c2831babf5fca0af404f441610557a"},
+    {file = "litestar-2.8.2.tar.gz", hash = "sha256:18353cb7246ba2e7f8d4aac4fe2d8772b503c931cf5ee16efc759cbbc3a2344b"},
 ]
 
 [[package]]
