@@ -1,4 +1,4 @@
-import { computed, getCurrentInstance, onMounted, ref } from 'vue'
+import { computed, ref } from 'vue'
 import { defineStore } from 'pinia'
 import { client, isBlocked } from '@/axios.js'
 import router from '@/router/index.js'
@@ -23,7 +23,7 @@ export const useAuthStore = defineStore('auth', () => {
     if (getCookie('csrftoken')) {
       csrf_cookie_set.value = true
     } else {
-      await client.get('/csrf-cookie').then((response) => {
+      await client.get('/csrf-cookie').then(() => {
         csrf_cookie_set.value = true
       })
     }
