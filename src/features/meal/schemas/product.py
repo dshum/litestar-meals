@@ -15,8 +15,8 @@ class ProductCreateSchema:
     weight: int
     calories: Decimal
     user_id: UUID
-    brand_id: Optional[UUID]
-    store_id: Optional[UUID]
+    brand_id: Optional[UUID] = None
+    store_id: Optional[UUID] = None
 
 
 class ProductCreateDTO(DataclassDTO[ProductCreateSchema]):

@@ -21,9 +21,17 @@ const client = axios.create({
   xsrfCookieName: 'csrftoken'
 })
 
+const blockingClient = axios.create({
+  baseURL: 'http://localhost:8013',
+  withCredentials: true,
+  withXSRFToken: true,
+  xsrfHeaderName: 'x-csrftoken',
+  xsrfCookieName: 'csrftoken'
+})
+
 const blockRequests = ref([])
 
-client.interceptors.request.use(function(config) {
+blockingClient.interceptors.request.use(function(config) {
   const controller = new AbortController()
 
   if (isPostMethod(config.method)) {
@@ -42,7 +50,7 @@ client.interceptors.request.use(function(config) {
   return Promise.reject(error)
 })
 
-client.interceptors.response.use(async (response) => {
+blockingClient.interceptors.response.use(async (response) => {
   if (isPostMethod(response.config.method) && !response.config.signal.aborted) {
     if (process.env.NODE_ENV === 'development') {
       await sleep()
@@ -52,4 +60,4 @@ client.interceptors.response.use(async (response) => {
   return response
 })
 
-export { client, isBlocked }
+export { client, blockingClient, isBlocked }

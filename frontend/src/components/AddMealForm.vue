@@ -1,12 +1,19 @@
 <script setup>
 import { onMounted, ref } from 'vue'
-import { Form } from 'vee-validate'
+import { Form, useForm } from 'vee-validate'
 import * as yup from 'yup'
 import InputField from '@/components/forms/InputField.vue'
 import { client } from '@/axios.js'
 import SelectField from '@/components/forms/SelectField.vue'
 
-const loading = ref(false)
+const emit = defineEmits(['productAdded'])
+
+const { resetForm } = useForm()
+
+const brands = ref([])
+const stores = ref([])
+const errorMessage = ref()
+
 const schema = yup.object({
   name: yup.string().required('Name is required'),
   weight: yup.number().required('Weight is required')
@@ -15,13 +22,9 @@ const schema = yup.object({
   calories: yup.number().required('Calories content is required')
     .moreThan(0, 'Calories must be greater than 0')
     .max(10000, 'Calories may not be greater than 10000'),
-  brand_name: yup.string(),
-  store_name: yup.string()
+  brand_id: yup.string(),
+  store_id: yup.string()
 })
-const error = ref()
-
-const brands = ref([])
-const stores = ref([])
 
 const getBrands = async () => {
   await client.get('/brands', {
@@ -39,14 +42,15 @@ const getStores = async () => {
   })
 }
 
-const onSubmit = async (form) => {
-  error.value = null
+const onSubmit = async (values, { resetForm }) => {
+  errorMessage.value = null
 
-  await client.post('/products', form).then(() => {
-
+  await client.post('/products', values).then(({ data }) => {
+    resetForm()
+    emit('productAdded', data)
   }).catch(({ response }) => {
     if (response.data.detail) {
-      error.value = response.data.detail
+      errorMessage.value = response.data.detail
     }
   })
 }
@@ -58,8 +62,8 @@ onMounted(() => {
 </script>
 
 <template>
-  <ul v-if="error" class="text-error">
-    <li>{{ error }}</li>
+  <ul v-if="errorMessage" class="text-error">
+    <li>{{ errorMessage }}</li>
   </ul>
 
   <Form :validation-schema="schema" @submit="onSubmit">
@@ -79,14 +83,14 @@ onMounted(() => {
       </div>
 
       <div class="form-control">
-        <SelectField name="brand" label="Brand">
+        <SelectField name="brand_id" label="Brand">
           <option value="">Select brand</option>
           <option v-for="brand in brands" :value="brand.id">{{ brand.name }}</option>
         </SelectField>
       </div>
 
       <div class="form-control">
-        <SelectField name="store" label="Store" placeholder="Select store">
+        <SelectField name="store_id" label="Store" placeholder="Select store">
           <option value="">Select store</option>
           <option v-for="store in stores" :value="store.id">{{ store.name }}</option>
         </SelectField>
@@ -94,8 +98,7 @@ onMounted(() => {
 
       <div class="form-control mt-2">
         <button class="btn btn-primary">
-          <span v-if="loading" class="loading loading-ring loading-lg"></span>
-          <span v-else>Save</span>
+          <span>Save</span>
         </button>
       </div>
     </div>

@@ -1,16 +1,27 @@
 <script setup>
 import { client } from '@/axios.js'
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 
+const props = defineProps({
+  addedProduct: Object
+})
+
+watch(
+  () => props.addedProduct,
+  () => {
+    getProducts()
+  }
+)
 
 const products = ref([])
 const totalPages = ref(1)
 const currentPage = ref(1)
+
 const pages = computed(() => {
   return Array.from({ length: totalPages.value }, (x, i) => i + 1)
 })
 
-async function getItems(page = 1) {
+async function getProducts(page = 1) {
   await client.get('/products', {
     params: {
       page: page,
@@ -25,7 +36,7 @@ async function getItems(page = 1) {
 }
 
 onMounted(async () => {
-  await getItems()
+  await getProducts()
 })
 </script>
 
@@ -35,11 +46,11 @@ onMounted(async () => {
       <table class="table table-zebra">
         <thead>
         <tr>
-          <th>Name</th>
-          <th>Calories/100 g</th>
-          <th>Weight, g</th>
-          <th>Brand</th>
-          <th>Store</th>
+          <th class="w-[40%]">Name</th>
+          <th class="w-[10%]">Calories/100 g</th>
+          <th class="w-[10%]">Weight, g</th>
+          <th class="w-[20%]">Brand</th>
+          <th class="w-[20%]">Store</th>
         </tr>
         </thead>
         <tbody>
@@ -47,8 +58,14 @@ onMounted(async () => {
           <td>{{ product.name }}</td>
           <td>{{ product.calories }}</td>
           <td>{{ product.weight }}</td>
-          <td>{{ product.brand?.name || '—' }}</td>
-          <td>{{ product.store?.name || '—' }}</td>
+          <td>
+            <span v-if="product.brand">{{ product.brand.name }}</span>
+            <span v-else class="text-gray-400">—</span>
+          </td>
+          <td>
+            <span v-if="product.store">{{ product.store.name }}</span>
+            <span v-else class="text-gray-400">—</span>
+          </td>
         </tr>
         </tbody>
       </table>
@@ -57,7 +74,7 @@ onMounted(async () => {
     <div v-if="pages.length > 1" class="flex flex-row justify-end">
       <div class="join mt-8">
         <template v-for="page in pages" :key="page">
-          <button @click="getItems(page)" class="join-item btn"
+          <button @click="getProducts(page)" class="join-item btn"
                   :class="{'btn-active': currentPage === page}">
             {{ page }}
           </button>
