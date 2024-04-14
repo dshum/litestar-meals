@@ -1,4 +1,5 @@
 from dataclasses import asdict
+from uuid import UUID
 
 from advanced_alchemy import IntegrityError
 from advanced_alchemy.filters import LimitOffset, OrderBy
@@ -19,3 +20,12 @@ class StoreUseCase:
 
     async def get_stores(self, limit_offset: LimitOffset, order_by: OrderBy):
         return await self.store_service.list_and_count(limit_offset, order_by)
+
+    async def get_store(self, id: UUID):
+        return await self.store_service.get(id)
+
+    async def update_store(self, data: StoreCreateSchema, id: UUID):
+        return await self.store_service.update(asdict(data), id)
+
+    async def delete_store(self, id: UUID):
+        return await self.store_service.delete(id)

@@ -18,10 +18,9 @@ class BrandController(Controller):
     dependencies = {
         "brand_use_case": Provide(provide_brand_use_case),
     }
-    dto = BrandCreateDTO
     return_dto = BrandReadDTO
 
-    @post("/")
+    @post("/", dto=BrandCreateDTO)
     async def create_brand(
             self,
             data: DTOData[BrandCreateSchema],

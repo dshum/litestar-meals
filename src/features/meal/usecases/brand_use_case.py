@@ -1,4 +1,5 @@
 from dataclasses import asdict
+from uuid import UUID
 
 from advanced_alchemy import IntegrityError
 from advanced_alchemy.filters import LimitOffset, OrderBy
@@ -12,10 +13,20 @@ class BrandUseCase:
         self.brand_service = brand_service
 
     async def create_brand(self, data: BrandCreateSchema) -> Brand:
-        brand_exists = await self.brand_service.exists(name=data.name, user_id=data.user_id)
-        if brand_exists:
-            raise IntegrityError("Brand already exists")
-        return await self.brand_service.create(asdict(data))
+        try:
+            return await self.brand_service.create(asdict(data))
+        except IntegrityError as e:
+            e.detail = "Brand already exists"
+            raise
 
     async def get_brands(self, limit_offset: LimitOffset, order_by: OrderBy):
         return await self.brand_service.list_and_count(limit_offset, order_by)
+
+    async def get_brand(self, id: UUID):
+        return await self.brand_service.get(id)
+
+    async def update_brand(self, data: BrandCreateSchema, id: UUID):
+        return await self.brand_service.update(asdict(data), id)
+
+    async def delete_brand(self, id: UUID):
+        return await self.brand_service.delete(id)

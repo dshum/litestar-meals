@@ -1,6 +1,5 @@
 from advanced_alchemy import IntegrityError
 from litestar import Litestar
-from litestar.config.csrf import CSRFConfig
 from litestar.exceptions import HTTPException, ValidationException, PermissionDeniedException
 from litestar.status_codes import HTTP_500_INTERNAL_SERVER_ERROR
 

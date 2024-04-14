@@ -70,13 +70,14 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   return {
-    csrf_cookie_set,
-    user, userName,
-    avatarName,
     setCSRFCookie,
     getUser,
     login,
     logout,
+    csrf_cookie_set,
+    user,
+    userName,
+    avatarName,
     logging,
     errorMessage,
     returnUrl

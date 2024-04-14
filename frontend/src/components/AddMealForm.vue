@@ -4,7 +4,6 @@ import { Form } from 'vee-validate'
 import * as yup from 'yup'
 import InputField from '@/components/forms/InputField.vue'
 import { client } from '@/axios.js'
-import ComboboxField from '@/components/forms/ComboboxField.vue'
 import SelectField from '@/components/forms/SelectField.vue'
 
 const loading = ref(false)
@@ -25,21 +24,25 @@ const brands = ref([])
 const stores = ref([])
 
 const getBrands = async () => {
-  await client.get('/brands').then(({ data }) => {
-    brands.value = data
+  await client.get('/brands', {
+    params: { pageSize: 100 }
+  }).then(({ data: { items } }) => {
+    brands.value = items
   })
 }
 
 const getStores = async () => {
-  await client.get('/stores').then(({ data }) => {
-    stores.value = data
+  await client.get('/stores', {
+    params: { pageSize: 100 }
+  }).then(({ data: { items } }) => {
+    stores.value = items
   })
 }
 
 const onSubmit = async (form) => {
   error.value = null
 
-  await client.post('/products', form).then(({ data }) => {
+  await client.post('/products', form).then(() => {
 
   }).catch(({ response }) => {
     if (response.data.detail) {
