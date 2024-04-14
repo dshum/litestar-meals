@@ -26,5 +26,5 @@ litestar_users_config = LitestarUsersConfig(
     verification_handler_config=VerificationHandlerConfig(),
     current_user_handler_config=CurrentUserHandlerConfig(),
     password_reset_handler_config=PasswordResetHandlerConfig(),
-    auth_exclude_paths=["/schema", "/register", "/login"],
+    auth_exclude_paths=["/schema", "/register", "/login", "/csrf-cookie"],
 )

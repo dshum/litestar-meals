@@ -14,8 +14,11 @@ function isBlocked(url) {
 }
 
 const client = axios.create({
+  baseURL: 'http://localhost:8013',
   withCredentials: true,
-  baseURL: 'http://localhost:8013'
+  withXSRFToken: true,
+  xsrfHeaderName: 'x-csrftoken',
+  xsrfCookieName: 'csrftoken'
 })
 
 const blockRequests = ref([])

@@ -1,4 +1,3 @@
-import traceback
 from typing import Any
 
 from litestar import Litestar, Response, Request, get

@@ -27,18 +27,22 @@ const schema = yup.object({
 
         <div class="shrink-0 w-full max-w-sm card shadow-2xl shadow-sky-200 bg-base-100">
           <div class="card-body">
-            <ul v-if="authStore.error" class="text-error">
-              <li>{{ authStore.error }}</li>
+            <ul v-if="authStore.errorMessage" class="text-error">
+              <li>{{ authStore.errorMessage }}</li>
             </ul>
 
             <Form :validation-schema="schema" @submit="authStore.login">
               <div class="grid grid-cols-1 gap-y-4">
                 <div class="form-control">
-                  <InputField type="email" name="email" label="Email" />
+                  <InputField type="email" name="email" label="Email"
+                              placeholder="Email"
+                              autocomplete="true" />
                 </div>
 
                 <div class="form-control">
-                  <InputField type="password" name="password" label="Password" />
+                  <InputField type="password" name="password" label="Password"
+                              placeholder="Password"
+                              autocomplete="true" />
                 </div>
 
                 <div class="form-control mt-4">
